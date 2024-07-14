@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: radcad
+Version: 0.13.0
+Summary: A Python package for dynamical systems modelling & simulation, inspired by and compatible with cadCAD
+Author: CADLabs
+Author-email: benschza@users.noreply.github.com
+Requires-Python: >=3.8,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Provides-Extra: compat
+Provides-Extra: extension-backend-ray
+Requires-Dist: boto3 (>=1.16.43,<2.0.0) ; extra == "extension-backend-ray"
+Requires-Dist: cadCAD (>=0.4.27,<0.5.0) ; extra == "compat"
+Requires-Dist: fn-py (>=0.6.0,<0.7.0)
+Requires-Dist: numpy (>=1.24.1,<2.0.0)
+Requires-Dist: pandas (>=1.0.0,<2.0.0)
+Requires-Dist: pathos (>=0.2.7,<0.3.0)
+Requires-Dist: py (>=1.11.0,<2.0.0)
+Requires-Dist: ray (>=1.1.0,<2.0.0) ; extra == "extension-backend-ray"
