@@ -4,7 +4,9 @@ from .sys_params import initial_values
 initial_state = {
     # nodes
     'node_amount': 0,
-    'node_revenue': 0,
+    'node_network_revenue': 0,
+    'node_incentive_revenue': 0,
+    'node_profit': 0,
     'node_expenditures': 0,
     'node_apr': 0,
     'node_change_amount': initial_values['initial_node_change_amount'],
@@ -12,8 +14,11 @@ initial_state = {
     # network
     'network_resource_demand': 0,
     'network_resource_provision': 0,
+    'network_resource_provision_max': 0,
     'network_resource_utilization': 0,
     'network_revenue': 0,
+    'buyback_and_burn_revenue': 0,
+
     
     # foundation
     'foundation_revenue': 0,

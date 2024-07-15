@@ -48,4 +48,53 @@ state_update_blocks = [
             'dex_token_price': s_dex_liquidity_token_price
             }
     },
+    {
+        'label': 'p_network_utilization',
+        'policies': {
+            'p_network_utilization': p_network_utilization,
+            },
+        'variables': {
+            'network_resource_provision': s_network_resource_provision,
+            'network_resource_provision_max': s_network_resource_provision_max,
+            'network_resource_utilization': s_network_resource_utilization,
+            }
+    },
+    {
+        'label': 'p_network_revenues',
+        'policies': {
+            'p_network_revenues': p_network_revenues,
+            },
+        'variables': {
+            'network_revenue': s_network_revenue,
+            'buyback_and_burn_revenue': s_buyback_and_burn_revenue,
+            'foundation_revenue': s_foundation_revenue,
+            'node_network_revenue': s_node_network_revenue,
+            }
+    },
+    {
+        'label': 'p_node_economics',
+        'policies': {
+            'p_node_economics': p_node_economics,
+            },
+        'variables': {
+            'node_profit': s_node_profit,
+            'node_incentive_revenue': s_node_incentive_revenue,
+            'node_expenditures': s_node_expenditures,
+            'node_apr': s_node_apr,
+            'dex_tokens': s_dex_liquidity_tokens,
+            'dex_usdc': s_dex_liquidity_usdc,
+            'dex_token_price': s_dex_liquidity_token_price
+            }
+    },
+    {
+        'label': 'p_foundation_economics',
+        'policies': {
+            'p_foundation_economics': p_foundation_economics,
+            },
+        'variables': {
+            'foundation_revenue': s_foundation_revenue,
+            'foundation_cash_reserves': s_foundation_cash_reserves,
+            'foundation_expenditures': s_foundation_expenditures
+            }
+    },
 ]

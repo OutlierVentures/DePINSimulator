@@ -98,47 +98,106 @@ def p_node_changes(params, substep, state_history, prev_state, **kwargs):
 
     return {"node_amount": new_node_amount, "node_change_amount": node_change_signal, "token_staked_supply": token_staked_supply_new, "dex_tokens": new_dex_tokens, "dex_usdc": new_dex_usdc, "dex_token_price": dex_token_price}
 
-def p_network_revenue(params, substep, state_history, prev_state, **kwargs):
-    # calculate the revenue, expenditures, and profits of the network for the next day
+def p_network_utilization(params, substep, state_history, prev_state, **kwargs):
+    # calculate the network resource utilization for the next day
     
     # parameters
     node_amount = prev_state['node_amount']
     node_resource_provision_rate = params['node_resource_provision_rate']
-    node_resource_provision_cost = params['node_resource_provision_cost']
     node_reliability = params['node_reliability']
-    resource_unit_price = params['resource_unit_price']
-    node_setup_cost = params['node_setup_cost']
-    node_revenue_share = params['node_revenue_share']
-    buyback_and_burn_revenue_share = params['buyback_and_burn_revenue_share']
-    foundation_revenue_share = params['foundation_revenue_share']
-    assert node_revenue_share + buyback_and_burn_revenue_share + foundation_revenue_share == 1, f"revenue shares must add up to 1. Current sum is {node_revenue_share + buyback_and_burn_revenue_share + foundation_revenue_share} with values node_revenue_share:{node_revenue_share}, buyback_and_burn_revenue_share:{buyback_and_burn_revenue_share}, foundation_revenue_share:{foundation_revenue_share}"
 
     # state variables
-    token_staked_supply = prev_state['token_staked_supply']
     network_resource_demand = prev_state['network_resource_demand']
 
     # policy logic
-    ## network economics
     ### calculate the maximum resource provision that the network can provide
     network_resource_provision_max = node_amount * node_resource_provision_rate * node_reliability
     ### calculate the actual network resource provision
     network_resource_provision = network_resource_demand if network_resource_demand <= network_resource_provision_max else network_resource_provision_max
     ### calculate the network utilization
     network_resource_utilization = network_resource_demand / network_resource_provision_max if network_resource_demand >= 0 else 0
+
+    return {"network_resource_provision_max": network_resource_provision_max, "node_resource_provision": network_resource_provision,
+            "network_resource_utilization": network_resource_utilization}
+
+def p_network_revenues(params, substep, state_history, prev_state, **kwargs):
+    # calculate the revenue, expenditures, and profits of the network for the next day
+    
+    # parameters
+    resource_unit_price = params['resource_unit_price']
+    node_revenue_share = params['node_revenue_share']
+    buyback_and_burn_revenue_share = params['buyback_and_burn_revenue_share']
+    foundation_revenue_share = params['foundation_revenue_share']
+    assert node_revenue_share + buyback_and_burn_revenue_share + foundation_revenue_share == 1, f"revenue shares must add up to 1. Current sum is {node_revenue_share + buyback_and_burn_revenue_share + foundation_revenue_share} with values node_revenue_share:{node_revenue_share}, buyback_and_burn_revenue_share:{buyback_and_burn_revenue_share}, foundation_revenue_share:{foundation_revenue_share}"
+
+    # state variables
+    network_resource_provision = prev_state['network_resource_provision']
+
+    # policy logic
+    ## network economics
     ### calculate the network revenue shares
     network_revenue = network_resource_provision * resource_unit_price
     buyback_and_burn_revenue = network_revenue * buyback_and_burn_revenue_share
     foundation_revenue = network_revenue * foundation_revenue_share
+    node_network_revenue = network_revenue * node_revenue_share
+
+    return {"network_revenue": network_revenue, "buyback_and_burn_revenue": buyback_and_burn_revenue,
+            "foundation_revenue": foundation_revenue, "node_network_revenue": node_network_revenue}
+
+def p_node_economics(params, substep, state_history, prev_state, **kwargs):
+    # calculate the revenue, expenditures, and profits of the network for the next day
+    
+    # parameters
+    node_resource_provision_cost = params['node_resource_provision_cost']
+    node_setup_cost = params['node_setup_cost']
+
+    # state variables
+    token_staked_supply = prev_state['token_staked_supply']
+    network_resource_provision = prev_state['network_resource_provision']
+    token_incentives_vested = prev_state['token_incentives_vested']
+    dex_tokens = prev_state['dex_tokens']
+    dex_usdc = prev_state['dex_usdc']
+    dex_token_price_usd = prev_state['dex_token_price']
+
+    # policy logic
+    ## node economics
+    ### calculate the network revenue shares
+    node_network_revenue = prev_state['node_network_revenue']
     node_expenditures = network_resource_provision * node_resource_provision_cost
-    node_revenue = network_revenue * node_revenue_share - node_expenditures
+    ### calculate the node revenue from incentivized token sales
+    #### update DEX liquidity as tokens need to be bought or sold
+    delta_dex_tokens = token_incentives_vested
+    delta_dex_usdc = - (delta_dex_tokens * dex_usdc) / (dex_tokens + delta_dex_tokens) if dex_tokens + delta_dex_tokens > 0 else 0
+    dex_token_price = np.abs(delta_dex_usdc / delta_dex_tokens) if delta_dex_tokens != 0 else dex_token_price_usd
+    new_dex_tokens = dex_tokens + delta_dex_tokens
+    new_dex_usdc = dex_usdc + delta_dex_usdc
+    
+    node_incentive_revenue = delta_dex_usdc
+
+    node_profit = node_network_revenue + node_incentive_revenue - node_expenditures
     
     # calculate the APR based on the revenue
-    node_apr = ((node_revenue*365) / node_setup_cost) * 100 if token_staked_supply != 0 else 0
+    node_apr = ((node_profit*365) / node_setup_cost) * 100 if token_staked_supply != 0 else 0
 
-    return {"network_resource_provision_max": network_resource_provision_max, "node_resource_provision": network_resource_provision,
-            "network_resource_utilization": network_resource_utilization, "network_revenue": network_revenue,
-            "buyback_and_burn_revenue": buyback_and_burn_revenue, "foundation_revenue": foundation_revenue,
-            "node_expenditures": node_expenditures, "node_revenue": node_revenue, "node_apr": node_apr}
+    return {"node_profit": node_profit, "node_incentive_revenue": node_incentive_revenue,
+            "node_expenditures": node_expenditures, "node_apr": node_apr,
+            "dex_tokens": new_dex_tokens, "dex_usdc": new_dex_usdc, "dex_token_price": dex_token_price}
+
+def p_foundation_economics(params, substep, state_history, prev_state, **kwargs):
+    # calculate the revenue, expenditures, and profits of the network for the next day
+    
+    # parameters
+    foundation_cash_burn_rate = params['foundation_cash_burn_rate']
+
+    # state variables
+    foundation_revenue = prev_state['foundation_revenue']
+    foundation_cash_reserves = prev_state['foundation_cash_reserves']
+
+    # policy logic
+    foundation_expenditures = foundation_cash_burn_rate / 12
+    foundation_cash_reserves_new = foundation_cash_reserves - foundation_expenditures + foundation_revenue
+
+    return {"foundation_revenue": foundation_revenue,"foundation_cash_reserves": foundation_cash_reserves_new, "foundation_expenditures": foundation_expenditures}
 
 
 def p_token_selling(params, substep, state_history, prev_state, **kwargs):
