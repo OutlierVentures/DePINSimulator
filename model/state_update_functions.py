@@ -58,15 +58,15 @@ def s_node_expenditures(params, substep, state_history, prev_state, policy_input
     updated_node_expenditures = policy_input['node_expenditures']
     return ('node_expenditures', updated_node_expenditures)
 
-def s_node_apy(params, substep, state_history, prev_state, policy_input, **kwargs):
+def s_node_apr(params, substep, state_history, prev_state, policy_input, **kwargs):
     # update the network resource demand
-    updated_node_apy = policy_input['node_apy']
-    return ('node_apy', updated_node_apy)
+    updated_node_apr = policy_input['node_apr']
+    return ('node_apr', updated_node_apr)
 
-def s_node_change_rate(params, substep, state_history, prev_state, policy_input, **kwargs):
+def s_node_change_amount(params, substep, state_history, prev_state, policy_input, **kwargs):
     # update the network resource demand
-    updated_node_change_rate = policy_input['node_change_rate']
-    return ('node_change_rate', updated_node_change_rate)
+    updated_node_change_amount = policy_input['node_change_amount']
+    return ('node_change_amount', updated_node_change_amount)
 
 def s_foundation_revenue(params, substep, state_history, prev_state, policy_input, **kwargs):
     # update the network resource demand

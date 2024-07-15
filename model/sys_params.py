@@ -4,7 +4,7 @@ Model Parameters
 
 initial_values = {
     'initial_foundation_cash_reserves': 5e6, # initial cash reserves of the DePIN foundation / $
-    'initial_node_change_rate': 1.00, # initial daily rate at which nodes leave the DePIN network. A value of <1.0 means node reduction and >1.0 node increase (scales up and down w.r.t. node APY)
+    'initial_node_change_amount': 1.00, # initial daily rate at which nodes leave the DePIN network. A value of <1.0 means node reduction and >1.0 node increase (scales up and down w.r.t. node APR)
 }
 
 sys_params = {
@@ -23,7 +23,7 @@ sys_params = {
     'foundation_revenue_share': [0.1], # ratio of the revenue that will be kept by the DePIN foundation / -
     'foundation_cash_burn_rate': [1e6], # annual cash burn rate of the DePIN foundation / $
     'resource_unit_price': [0.000001], # price of one unit of resource in the DePIN network / $
-    'apy_threshold': [20], # annual percentage yield (APY) threshold that node operators find attractive to participate in the DePIN network / %
+    'apr_threshold': [20], # annual percentage yield (APR) threshold that node operators find attractive to participate in the DePIN network / %
     'network_resource_demand_growth_rate': [0.25], # daily growth rate of the network resource demand / %
     
     # DePIN token parameters
@@ -38,12 +38,12 @@ sys_params = {
                                                                                 # Fixed means that the incentives will be emitted at a fixed rate,
                                                                                 # fixed weighted means that the emissions are predefined,
                                                                                 # but can be weighted to be higher at the beginning of the simulation,
-                                                                                # while variable means that the incentives will be emitted at a variable rate based on the APY threshold
+                                                                                # while variable means that the incentives will be emitted at a variable rate based on the APR threshold
     'incentive_token_vesting_duration': [365*5], # duration in days for the incentive token incentive emissions. Only applicable for 'fixed_rate' and 'fixed_weighted_rate' modes
     'incentive_early_weight_ratio': [0.8], # ratio of the total incentives that will be emitted in the first half of the incentives token emission duration. Only applicable for 'fixed_weighted_rate' mode
     'token_mint_model': ['mint_fixed_rate'],    # mode of token minting.
-                                                # It can be "mint_apy_threshold", "mint_fixed_rate", or "mint_fixed_weighted_rate".
-                                                # mint_apy_threshold means that the tokens will be minted to maintain the APY threshold,
+                                                # It can be "mint_apr_threshold", "mint_fixed_rate", or "mint_fixed_weighted_rate".
+                                                # mint_apr_threshold means that the tokens will be minted to maintain the APR threshold,
                                                 # mint_fixed_rate means that the tokens will be minted at a fixed rate,
                                                 # mint_fixed_rate_incentive_continuation means that the tokens will be minted at a fixed rate according to the last emission rate of the incentives,
 

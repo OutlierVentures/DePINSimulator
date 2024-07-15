@@ -37,6 +37,6 @@ if __name__ == "__main__":
 
     # plot results
     rdf.plot(x='timestep', y=['network_resource_demand', 'dex_tokens', 'dex_usdc', 'dex_token_price', 'token_incentives_vested', 'token_seller_vested', 'token_incentives_vested_cum', 'token_seller_vested_cum'], subplots=True, layout=(4, 2), figsize=(15, 10), title='DePIN Simulation Results')
-    rdf.plot(x='timestep', y=['node_amount', 'node_change_rate', 'token_staked_supply'], subplots=True, layout=(4, 2), figsize=(15, 10), title='DePIN Simulation Results')
+    rdf.plot(x='timestep', y=['node_amount', 'node_change_amount', 'token_staked_supply'], subplots=True, layout=(4, 2), figsize=(15, 10), title='DePIN Simulation Results')
 
     plt.show()

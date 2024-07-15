@@ -41,7 +41,7 @@ state_update_blocks = [
             },
         'variables': {
             'node_amount': s_node_amount,
-            'node_change_rate': s_node_change_rate,
+            'node_change_amount': s_node_change_amount,
             'token_staked_supply': s_token_staked_supply,
             'dex_tokens': s_dex_liquidity_tokens,
             'dex_usdc': s_dex_liquidity_usdc,

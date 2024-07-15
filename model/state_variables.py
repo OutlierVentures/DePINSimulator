@@ -4,14 +4,15 @@ from .sys_params import initial_values
 initial_state = {
     # nodes
     'node_amount': 0,
-    'node_resource_provision': 0,
     'node_revenue': 0,
     'node_expenditures': 0,
-    'node_apy': 0,
-    'node_change_rate': initial_values['initial_node_change_rate'],
+    'node_apr': 0,
+    'node_change_amount': initial_values['initial_node_change_amount'],
     
     # network
     'network_resource_demand': 0,
+    'network_resource_provision': 0,
+    'network_resource_utilization': 0,
     'network_revenue': 0,
     
     # foundation
