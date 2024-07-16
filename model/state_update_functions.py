@@ -43,15 +43,10 @@ def s_node_amount(params, substep, state_history, prev_state, policy_input, **kw
     updated_node_amount = policy_input['node_amount']
     return ('node_amount', updated_node_amount)
 
-def s_node_resource_provision(params, substep, state_history, prev_state, policy_input, **kwargs):
-    # update the node resource provision
-    updated_node_resource_provision = policy_input['node_resource_provision']
-    return ('node_resource_provision', updated_node_resource_provision)
-
 def s_node_network_revenue(params, substep, state_history, prev_state, policy_input, **kwargs):
-    # update the node revenue
-    updated_node_revenue = policy_input['node_revenue']
-    return ('node_revenue', updated_node_revenue)
+    # update the node network revenue
+    updated_node_revenue = policy_input['node_network_revenue']
+    return ('node_network_revenue', updated_node_revenue)
 
 def s_node_expenditures(params, substep, state_history, prev_state, policy_input, **kwargs):
     # update the node expenditures

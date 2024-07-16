@@ -26,8 +26,8 @@ initial_state = {
     'foundation_cash_reserves': initial_values['initial_foundation_cash_reserves'],
     
     # token
-    'token_circulating_supply': 0,
-    'token_total_supply': 0,
+    'token_circulating_supply': initial_values['liquidity_token_allocation'],
+    'token_total_supply': initial_values['token_initial_total_supply'],
     'token_burned_supply': 0,
     'token_burned_supply_cum': 0,
     'token_minted_supply': 0,
@@ -40,8 +40,7 @@ initial_state = {
     'token_seller_vested_cum': 0,
 
     # market making
-    'dex_tokens': 0,
-    'dex_usdc': 0,
-    'dex_depth': 0,
-    'dex_token_price': 0,
+    'dex_tokens': initial_values['liquidity_token_allocation'] * initial_values['token_initial_total_supply'],
+    'dex_usdc': (initial_values['liquidity_token_allocation'] * initial_values['token_initial_total_supply']) * (initial_values['token_initial_valuation'] / initial_values['token_initial_total_supply']),
+    'dex_token_price': initial_values['token_initial_valuation'] / initial_values['token_initial_total_supply'],
 }

@@ -3,17 +3,6 @@ from .state_update_functions import *
 
 state_update_blocks = [
     {
-        'label': 'p_token_liquidity_setup',
-        'policies': {
-            'p_token_liquidity_setup': p_token_liquidity_setup,
-            },
-        'variables': {
-            'dex_tokens': s_dex_liquidity_tokens,
-            'dex_usdc': s_dex_liquidity_usdc,
-            'dex_token_price': s_dex_liquidity_token_price
-            }
-    },
-    {
         'label': 'p_network_demand',
         'policies': {
             'p_network_demand': p_network_demand,
@@ -95,6 +84,17 @@ state_update_blocks = [
             'foundation_revenue': s_foundation_revenue,
             'foundation_cash_reserves': s_foundation_cash_reserves,
             'foundation_expenditures': s_foundation_expenditures
+            }
+    },
+    {
+        'label': 'p_token_selling',
+        'policies': {
+            'p_token_selling': p_token_selling,
+            },
+        'variables': {
+            'dex_tokens': s_dex_liquidity_tokens,
+            'dex_usdc': s_dex_liquidity_usdc,
+            'dex_token_price': s_dex_liquidity_token_price
             }
     },
 ]

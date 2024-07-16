@@ -16,7 +16,7 @@ from model.state_variables import initial_state
 from model.state_update_blocks import state_update_blocks
 
 # Set the number of timesteps and runs for the simulation
-TIMESTEPS = 365 * 6
+TIMESTEPS = 365*4
 RUNS = 1
 MONTE_CARLO_RUNS = 1
 
@@ -33,10 +33,14 @@ def main():
 if __name__ == "__main__":
     df, rdf = main()
 
+    print(rdf.head())
     print(rdf.tail())
 
     # plot results
-    rdf.plot(x='timestep', y=['network_resource_demand', 'dex_tokens', 'dex_usdc', 'dex_token_price', 'token_incentives_vested', 'token_seller_vested', 'token_incentives_vested_cum', 'token_seller_vested_cum'], subplots=True, layout=(4, 2), figsize=(15, 10), title='DePIN Simulation Results')
-    rdf.plot(x='timestep', y=['node_amount', 'node_change_amount', 'token_staked_supply'], subplots=True, layout=(4, 2), figsize=(15, 10), title='DePIN Simulation Results')
+    rdf.plot(x='timestep', y=['network_resource_demand', 'dex_tokens', 'dex_usdc', 'dex_token_price',
+                              'token_incentives_vested', 'token_seller_vested', 'token_incentives_vested_cum',
+                              'token_seller_vested_cum'], subplots=True, layout=(4, 2), figsize=(15, 10), title='DePIN Simulation Results')
+    rdf.plot(x='timestep', y=['node_amount', 'node_change_amount', 'token_staked_supply', 'node_apr',
+                              'node_network_revenue', 'node_incentive_revenue', 'node_profit', 'node_expenditures'], subplots=True, layout=(4, 2), figsize=(15, 10), title='DePIN Simulation Results')
 
     plt.show()
