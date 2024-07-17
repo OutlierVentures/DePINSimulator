@@ -143,3 +143,7 @@ def s_node_incentive_revenue(params, substep, state_history, prev_state, policy_
     updated_node_incentive_revenue = policy_input['node_incentive_revenue']
     return ('node_incentive_revenue', updated_node_incentive_revenue)
 
+def s_node_apr_error_cum(params, substep, state_history, prev_state, policy_input, **kwargs):
+    # update the node apr error cumulative
+    updated_node_apr_error_cum = policy_input['node_apr_error_cum']
+    return ('node_apr_error_cum', updated_node_apr_error_cum)

@@ -33,7 +33,6 @@ initial_state = {
     'token_minted_supply': 0,
     'token_minted_supply_cum': 0,
     'token_staked_supply': 0,
-    'token_staked_supply_cum': 0,
     'token_incentives_vested': 0,
     'token_incentives_vested_cum': 0,
     'token_seller_vested': 0,
@@ -43,4 +42,7 @@ initial_state = {
     'dex_tokens': initial_values['liquidity_token_allocation'] * initial_values['token_initial_total_supply'],
     'dex_usdc': (initial_values['liquidity_token_allocation'] * initial_values['token_initial_total_supply']) * (initial_values['token_initial_valuation'] / initial_values['token_initial_total_supply']),
     'dex_token_price': initial_values['token_initial_valuation'] / initial_values['token_initial_total_supply'],
+
+    # model variables
+    'node_apr_error_cum': 0,
 }

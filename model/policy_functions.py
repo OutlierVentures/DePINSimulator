@@ -26,6 +26,7 @@ def p_token_vesting(params, substep, state_history, prev_state, **kwargs):
     incentive_token_vesting_duration = params['incentive_token_vesting_duration']
     initial_node_amount = params['initial_node_amount']
     node_token_stake = params['node_token_stake']
+    assert seller_token_allocation >= initial_node_amount * node_token_stake, f"seller token allocation must be greater than the initial node amount times the node token stake. Current values are seller_token_allocation:{seller_token_allocation} vs. initial_node_amount x node_token_stake = {initial_node_amount*node_token_stake} with initial_node_amount:{initial_node_amount}, node_token_stake:{node_token_stake}"
     seller_token_allocation -= initial_node_amount * node_token_stake # remove the tokens staked by the nodes from the seller allocation
     
     # ensure consistency of token initial allocations
@@ -55,9 +56,13 @@ def p_node_changes(params, substep, state_history, prev_state, **kwargs):
     apr_threshold = params['apr_threshold']
     node_token_stake = params['node_token_stake']
     node_growth_cap = params['node_growth_cap']
+    apr_controller_kp = params['apr_controller_kp']
+    apr_controller_ki = params['apr_controller_ki']
+    apr_controller_kd = params['apr_controller_kd']
 
     # state variables
     node_apr = prev_state['node_apr']
+    node_apr_error_cum = prev_state['node_apr_error_cum']
     token_staked_supply = prev_state['token_staked_supply']
     dex_tokens = prev_state['dex_tokens']
     dex_usdc = prev_state['dex_usdc']
@@ -67,11 +72,12 @@ def p_node_changes(params, substep, state_history, prev_state, **kwargs):
     # policy logic
     # change amount of nodes based on APR controller
     node_apr_error = (node_apr - apr_threshold)**2 * np.sign(node_apr - apr_threshold) if prev_state['timestep'] > 1 else 0
+    node_apr_error_cum += node_apr_error
     node_apr_previous_error = (node_apr_m1/apr_threshold-1)**2 * np.sign(node_apr_m1/apr_threshold-1) if len(state_history) > 2 else 0
-    Kp = 1.0
-    Ki = 0.0
-    Kd = 0.1
-    node_change_signal = get_pid_controller_signal(Kp, Ki, Kd, error=node_apr_error, integral=0.0, previous_error=node_apr_previous_error, dt=1)
+    Kp = apr_controller_kp
+    Ki = apr_controller_ki
+    Kd = apr_controller_kd
+    node_change_signal = get_pid_controller_signal(Kp, Ki, Kd, error=node_apr_error, integral=node_apr_error_cum, previous_error=node_apr_previous_error, dt=1)
     node_change_amount = np.min([np.abs(node_change_signal), node_amount*(node_growth_cap/100)]) * np.sign(node_change_signal)
     new_node_amount = np.max([int(node_amount + node_change_amount), 1])
 
@@ -96,7 +102,10 @@ def p_node_changes(params, substep, state_history, prev_state, **kwargs):
     new_dex_tokens = dex_tokens + delta_dex_tokens
     new_dex_usdc = dex_usdc + delta_dex_usdc
 
-    return {"node_amount": new_node_amount, "node_change_amount": node_change_amount_applied, "token_staked_supply": token_staked_supply_new, "dex_tokens": new_dex_tokens, "dex_usdc": new_dex_usdc, "dex_token_price": dex_token_price}
+    return {"node_amount": new_node_amount, "node_change_amount": node_change_amount_applied,
+            "token_staked_supply": token_staked_supply_new, "dex_tokens": new_dex_tokens,
+            "dex_usdc": new_dex_usdc, "dex_token_price": dex_token_price,
+            "node_apr_error_cum": node_apr_error_cum}
 
 def p_network_utilization(params, substep, state_history, prev_state, **kwargs):
     # calculate the network resource utilization for the next day
@@ -253,3 +262,26 @@ def p_buyback_and_burn(params, substep, state_history, prev_state, **kwargs):
     token_burned_supply_cum = prev_state['token_burned_supply_cum'] + token_burned_supply
 
     return {"dex_tokens": new_dex_tokens, "dex_usdc": new_dex_usdc, "dex_token_price": dex_token_price, "token_burned_supply": token_burned_supply, "token_burned_supply_cum": token_burned_supply_cum}
+
+def p_ecosystem_metrics(params, substep, state_history, prev_state, **kwargs):
+    # calculate the circulating supply and total supply of the token
+
+    # parameters
+    token_initial_total_supply = state_history[0][-1]['token_total_supply']
+    liquidity_token_allocation = state_history[0][-1]['dex_tokens']
+    idle_token_allocation = params['idle_token_allocation'] * token_initial_total_supply
+    incentive_token_allocation = params['incentive_token_allocation'] * token_initial_total_supply
+    seller_token_allocation = params['seller_token_allocation'] * token_initial_total_supply
+
+    # state variables
+    dex_tokens = prev_state['dex_tokens']
+    token_staked_supply = prev_state['token_staked_supply']
+    token_burned_supply_cum = prev_state['token_burned_supply_cum']
+    token_minted_supply_cum = prev_state['token_minted_supply_cum']
+
+    # policy logic
+    token_total_supply = seller_token_allocation + incentive_token_allocation + idle_token_allocation + liquidity_token_allocation - token_burned_supply_cum + token_minted_supply_cum
+    token_circulating_supply = dex_tokens + token_staked_supply + idle_token_allocation
+
+    return {"token_total_supply": token_total_supply, "token_circulating_supply": token_circulating_supply}
+                                             

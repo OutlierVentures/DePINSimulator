@@ -34,7 +34,8 @@ state_update_blocks = [
             'token_staked_supply': s_token_staked_supply,
             'dex_tokens': s_dex_liquidity_tokens,
             'dex_usdc': s_dex_liquidity_usdc,
-            'dex_token_price': s_dex_liquidity_token_price
+            'dex_token_price': s_dex_liquidity_token_price,
+            'node_apr_error_cum': s_node_apr_error_cum
             }
     },
     {
@@ -108,6 +109,16 @@ state_update_blocks = [
             'dex_token_price': s_dex_liquidity_token_price,
             'token_burned_supply': s_token_burned_supply,
             'token_burned_supply_cum': s_token_burned_supply_cum
+            }
+    },
+    {
+        'label': 'p_ecosystem_metrics',
+        'policies': {
+            'p_ecosystem_metrics': p_ecosystem_metrics,
+            },
+        'variables': {
+            'token_total_supply': s_token_total_supply,
+            'token_circulating_supply': s_token_circulating_supply
             }
     },
 
