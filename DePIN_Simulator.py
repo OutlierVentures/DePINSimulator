@@ -27,7 +27,7 @@ def main():
     df = pd.DataFrame(result)
 
     # prepare the plots
-    fig, axarr = plt.subplots(4,3, figsize=(16,12))
+    fig, axarr = plt.subplots(4,4, figsize=(16,12))
     
     # get amount of distinct subsets in the simulation
     subsets = df['subset'].unique()
@@ -54,66 +54,66 @@ def main():
 
         # Network Resource Demand
         axarr[0,0].plot(rdf.timestep, rdf.network_resource_demand, label=legend_text)
-        axarr[0,0].set_title('Network Resource Demand')
+        axarr[0,0].set_title('Network Resource Demand / Resource Units')
         axarr[0,0].grid('on', which='both')
         axarr[0,0].legend()
 
         # Node Amounts
         axarr[1,0].plot(rdf.timestep, rdf.node_amount)
-        axarr[1,0].set_title('Node Amounts')
+        axarr[1,0].set_title('Node Amounts / Nodes')
         axarr[1,0].grid('on', which='both')
         axarr[1,0].set_yscale('log')
 
         # Node Change Amounts
         axarr[2,0].plot(rdf.timestep, rdf.node_change_amount, label=subset)
-        axarr[2,0].set_title('Node Change Amounts')
+        axarr[2,0].set_title('Node Change Amounts / Nodes')
         axarr[2,0].grid('on', which='both')
 
         # Node APR
         axarr[3,0].plot(rdf.timestep, rdf.node_apr, label=subset)
-        axarr[3,0].set_title('Node APR')
+        axarr[3,0].set_title('Node APR / %')
         axarr[3,0].set_xlabel('Days')
         axarr[3,0].grid('on', which='both')
 
         # Node Profit
         axarr[0,1].plot(rdf.timestep, rdf.node_profit, label=subset)
-        axarr[0,1].set_title('Node Profit')
+        axarr[0,1].set_title('Node Profit / $')
         axarr[0,1].grid('on', which='both')
         axarr[0,1].set_yscale('log')
 
         # Node Network Revenue
         axarr[1,1].plot(rdf.timestep, rdf.node_network_revenue, label=subset)
-        axarr[1,1].set_title('Node Network Revenue')
+        axarr[1,1].set_title('Node Network Revenue / $')
         axarr[1,1].grid('on', which='both')
         axarr[1,1].set_yscale('log')
 
         # Node Incentive Revenue
         axarr[2,1].plot(rdf.timestep, rdf.node_incentive_revenue, label=subset)
-        axarr[2,1].set_title('Node Incentive Revenue')
+        axarr[2,1].set_title('Node Incentive Revenue / $')
         axarr[2,1].grid('on', which='both')
         axarr[2,1].set_yscale('log')
 
         # Node Expenditures
         axarr[3,1].plot(rdf.timestep, rdf.node_expenditures, label=subset)
-        axarr[3,1].set_title('Node Expenditures')
+        axarr[3,1].set_title('Node Expenditures / %')
         axarr[3,1].set_xlabel('Days')
         axarr[3,1].grid('on', which='both')
         axarr[3,1].set_yscale('log')
 
         # DEX Token Price
         axarr[0,2].plot(rdf.timestep, rdf.dex_token_price, label=subset)
-        axarr[0,2].set_title('DEX Token Price')
+        axarr[0,2].set_title('DEX Token Price / $')
         axarr[0,2].grid('on', which='both')
         axarr[0,2].set_yscale('log')
 
         # token seller vested
         axarr[1,2].plot(rdf.timestep, rdf.token_seller_vested, label=subset)
-        axarr[1,2].set_title('Token Seller Vested')
+        axarr[1,2].set_title('Token Seller Vested / Tokens')
         axarr[1,2].grid('on', which='both')
 
         # token incentives vested
         axarr[2,2].plot(rdf.timestep, rdf.token_incentives_vested, label=subset)
-        axarr[2,2].set_title('Token Incentives Vested')
+        axarr[2,2].set_title('Token Incentives Vested / Tokens')
         axarr[2,2].grid('on', which='both')
 
         # Token Staked Supply
@@ -122,6 +122,26 @@ def main():
         axarr[3,2].set_xlabel('Days')
         axarr[3,2].grid('on', which='both')
 
+        # Foundation Financial Reserves
+        axarr[0,3].plot(rdf.timestep, rdf.foundation_cash_reserves, label=subset)
+        axarr[0,3].set_title('Foundation Cash Reserves / $')
+        axarr[0,3].grid('on', which='both')
+
+        # Foundation Finances
+        axarr[1,3].plot(rdf.timestep, rdf.foundation_revenue, label=subset)
+        axarr[1,3].set_title('Foundation Revenue / $')
+        axarr[1,3].grid('on', which='both')
+
+        # token seller vested
+        axarr[2,3].plot(rdf.timestep, rdf.foundation_expenditures, label=subset)
+        axarr[2,3].set_title('Foundation Expenditures')
+        axarr[2,3].grid('on', which='both')
+
+        # Token Staked Supply
+        axarr[3,3].plot(rdf.timestep, rdf.token_burned_supply_cum / initial_values['token_initial_total_supply']*100, label=subset)
+        axarr[3,3].set_title('Token Burned Supply / %')
+        axarr[3,3].set_xlabel('Days')
+        axarr[3,3].grid('on', which='both')
 
     plt.tight_layout()
     plt.show()

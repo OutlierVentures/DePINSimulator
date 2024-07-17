@@ -53,6 +53,8 @@ def postprocessing(df):
                           'token_seller_vested': df.token_seller_vested,
                           'token_incentives_vested_cum': df.token_incentives_vested_cum,
                           'token_seller_vested_cum': df.token_seller_vested_cum,
+                          'token_burned_supply': df.token_burned_supply,
+                          'token_burned_supply_cum': df.token_burned_supply_cum,
                           'node_amount': df.node_amount,
                           'node_profit': df.node_profit,
                           'node_network_revenue': df.node_network_revenue,

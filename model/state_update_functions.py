@@ -88,6 +88,11 @@ def s_token_burned_supply(params, substep, state_history, prev_state, policy_inp
     updated_token_burned_supply = policy_input['token_burned_supply']
     return ('token_burned_supply', updated_token_burned_supply)
 
+def s_token_burned_supply_cum(params, substep, state_history, prev_state, policy_input, **kwargs):
+    # update the cumulatively token burned supply
+    updated_token_burned_supply_cum = policy_input['token_burned_supply_cum']
+    return ('token_burned_supply_cum', updated_token_burned_supply_cum)
+
 def s_token_minted_supply(params, substep, state_history, prev_state, policy_input, **kwargs):
     # update the token minted supply
     updated_token_minted_supply = policy_input['token_minted_supply']
@@ -137,3 +142,4 @@ def s_node_incentive_revenue(params, substep, state_history, prev_state, policy_
     # update the node incentive revenue
     updated_node_incentive_revenue = policy_input['node_incentive_revenue']
     return ('node_incentive_revenue', updated_node_incentive_revenue)
+

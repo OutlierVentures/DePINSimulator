@@ -232,3 +232,24 @@ def p_token_selling(params, substep, state_history, prev_state, **kwargs):
     new_dex_usdc = dex_usdc + delta_dex_usdc
 
     return {"dex_tokens": new_dex_tokens, "dex_usdc": new_dex_usdc, "dex_token_price": dex_token_price}
+
+def p_buyback_and_burn(params, substep, state_history, prev_state, **kwargs):
+    # buyback and burn tokens from the buyback and burn revenue share
+    # state variables
+    dex_tokens = prev_state['dex_tokens']
+    dex_usdc = prev_state['dex_usdc']
+    dex_token_price_usd = prev_state['dex_token_price']
+    buyback_and_burn_revenue = prev_state['buyback_and_burn_revenue']
+
+    # policy logic
+    #### update DEX liquidity as tokens need to be bought or sold
+    delta_dex_usdc = buyback_and_burn_revenue
+    delta_dex_tokens = - (delta_dex_usdc * dex_tokens) / (dex_usdc + delta_dex_usdc) if dex_usdc + delta_dex_usdc > 0 else 0
+    dex_token_price = np.abs(delta_dex_usdc / delta_dex_tokens) if delta_dex_tokens != 0 else dex_token_price_usd
+    new_dex_tokens = dex_tokens + delta_dex_tokens
+    new_dex_usdc = dex_usdc + delta_dex_usdc
+
+    token_burned_supply = -delta_dex_tokens
+    token_burned_supply_cum = prev_state['token_burned_supply_cum'] + token_burned_supply
+
+    return {"dex_tokens": new_dex_tokens, "dex_usdc": new_dex_usdc, "dex_token_price": dex_token_price, "token_burned_supply": token_burned_supply, "token_burned_supply_cum": token_burned_supply_cum}

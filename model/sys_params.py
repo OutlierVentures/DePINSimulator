@@ -3,7 +3,7 @@ Model Parameters
 """
 
 initial_values = {
-    'initial_foundation_cash_reserves': 5e6, # initial cash reserves of the DePIN foundation / $
+    'initial_foundation_cash_reserves': 1e8, # initial cash reserves of the DePIN foundation / $
     'initial_node_change_amount': 1.00, # initial daily rate at which nodes leave the DePIN network. A value of <1.0 means node reduction and >1.0 node increase (scales up and down w.r.t. node APR)
     'token_initial_total_supply': 1e10, # initial total supply of the DePIN token
     'token_initial_valuation': 5e7, # initial valuation of the DePIN token / $
@@ -12,7 +12,7 @@ initial_values = {
 
 sys_params = {
     # DePIN node parameters
-    'initial_node_amount': [20000, 20000, 30000], # initial number of nodes in the DePIN network
+    'initial_node_amount': [20000], # initial number of nodes in the DePIN network
     'node_setup_cost': [1000.0], # one-time cost to setup a node. This can be hardware, software, license, etc. costs depending on the DePIN application / $
     'node_resource_provision_cost': [0.000001], # cost to provision one unit of resource by a node per day. Resources can be compute, memory, storage, etc. depending on the DePIN application / $
     'node_resource_provision_rate': [1e6], # daily rate at which resources can be provisioned by a node. Resources can be compute, memory, storage, etc. depending on the DePIN application
@@ -22,10 +22,10 @@ sys_params = {
     
     # DePIN economic parameters
     'initial_network_resource_demand': [1e8, 1e8, 1e9], # initial network resource demand in the DePIN network / resource units
-    'node_revenue_share': [0.85], # revenue share that the node receives for participating in the DePIN network / -
+    'node_revenue_share': [0.80], # revenue share that the node receives for participating in the DePIN network / -
     'buyback_and_burn_revenue_share': [0.05], # ratio of the revenue that will be used for the buyback and burn mechanism / -
-    'foundation_revenue_share': [0.1], # ratio of the revenue that will be kept by the DePIN foundation / -
-    'foundation_cash_burn_rate': [1e6], # annual cash burn rate of the DePIN foundation / $
+    'foundation_revenue_share': [0.15], # ratio of the revenue that will be kept by the DePIN foundation / -
+    'foundation_cash_burn_rate': [3e5], # annual cash burn rate of the DePIN foundation / $
     'resource_unit_price': [0.00000125], # price of one unit of resource in the DePIN network / $
     'apr_threshold': [20], # annual percentage yield (APR) threshold that node operators find attractive to participate in the DePIN network / %
     'network_resource_demand_growth_rate': [0.25], # daily growth rate of the network resource demand / %

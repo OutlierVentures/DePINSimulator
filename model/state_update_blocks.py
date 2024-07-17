@@ -97,4 +97,18 @@ state_update_blocks = [
             'dex_token_price': s_dex_liquidity_token_price
             }
     },
+    {
+        'label': 'p_buyback_and_burn',
+        'policies': {
+            'p_buyback_and_burn': p_buyback_and_burn,
+            },
+        'variables': {
+            'dex_tokens': s_dex_liquidity_tokens,
+            'dex_usdc': s_dex_liquidity_usdc,
+            'dex_token_price': s_dex_liquidity_token_price,
+            'token_burned_supply': s_token_burned_supply,
+            'token_burned_supply_cum': s_token_burned_supply_cum
+            }
+    },
+
 ]
