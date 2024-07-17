@@ -43,6 +43,7 @@ def postprocessing(df):
     # Create an analysis dataset
     data = (pd.DataFrame({'timestep': timesteps,
                           'run': df.run,
+                          'subset': df.subset,
                           'network_resource_demand': df.network_resource_demand,
                           'network_resource_provision': df.network_resource_provision,
                           'dex_tokens': df.dex_tokens,

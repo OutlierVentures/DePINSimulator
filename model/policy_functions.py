@@ -76,17 +76,15 @@ def p_node_changes(params, substep, state_history, prev_state, **kwargs):
     new_node_amount = np.max([int(node_amount + node_change_amount), 1])
 
     # update tokens staked
-    token_staked_supply_new = new_node_amount * node_token_stake
+    token_staked_supply_new = np.multiply(new_node_amount, node_token_stake, dtype=object)
     # prevent the buy of tokens off the market for the initial nodes as we assume the purchased the tokens beforehand
     stake_diff = token_staked_supply_new - token_staked_supply if prev_state['timestep'] > 1 else 0
-    if prev_state['timestep'] > 365*3:
-        print(f"0T{prev_state['timestep']} - node_amount: {node_amount}, node_change_amount: {node_change_amount}, token_staked_supply: {token_staked_supply}, stake_diff: {stake_diff}, node_change_signal: {node_change_signal}, node_change_amount: {node_change_amount}, new_node_amount: {new_node_amount}, token_staked_supply_new: {token_staked_supply_new}")
     # check if enough tokens are in the LP and change stake_diff and token_staked_supply_new accordingly
     if stake_diff > 0:
         stake_diff = np.min([stake_diff, int(dex_tokens/node_token_stake)*node_token_stake])
     else:
         stake_diff = np.max([stake_diff, -token_staked_supply])
-    token_staked_supply_new = token_staked_supply + stake_diff if prev_state['timestep'] > 1 else new_node_amount * node_token_stake
+    token_staked_supply_new = token_staked_supply + stake_diff if prev_state['timestep'] > 1 else np.multiply(new_node_amount, node_token_stake, dtype=object)
 
     # change the node amount accordingly
     new_node_amount = int(token_staked_supply_new / node_token_stake)
@@ -97,10 +95,6 @@ def p_node_changes(params, substep, state_history, prev_state, **kwargs):
     dex_token_price = np.abs(delta_dex_usdc / delta_dex_tokens) if delta_dex_tokens != 0 else dex_token_price_usd
     new_dex_tokens = dex_tokens + delta_dex_tokens
     new_dex_usdc = dex_usdc + delta_dex_usdc
-
-    # print all metrics
-    if prev_state['timestep'] > 365*3:
-        print(f"T{prev_state['timestep']} - node_amount: {node_amount}, node_change_amount: {node_change_amount}, token_staked_supply: {token_staked_supply}, stake_diff: {stake_diff}, node_apr: {node_apr}, node_apr_m1: {node_apr_m1}, node_change_signal: {node_change_signal}, node_change_amount: {node_change_amount}, new_node_amount: {new_node_amount}, token_staked_supply_new: {token_staked_supply_new}, dex_tokens: {new_dex_tokens}, dex_usdc: {new_dex_usdc}, dex_token_price: {dex_token_price}")
 
     return {"node_amount": new_node_amount, "node_change_amount": node_change_amount_applied, "token_staked_supply": token_staked_supply_new, "dex_tokens": new_dex_tokens, "dex_usdc": new_dex_usdc, "dex_token_price": dex_token_price}
 

@@ -12,16 +12,16 @@ initial_values = {
 
 sys_params = {
     # DePIN node parameters
-    'initial_node_amount': [5000], # initial number of nodes in the DePIN network
+    'initial_node_amount': [20000, 20000, 30000], # initial number of nodes in the DePIN network
     'node_setup_cost': [1000.0], # one-time cost to setup a node. This can be hardware, software, license, etc. costs depending on the DePIN application / $
     'node_resource_provision_cost': [0.000001], # cost to provision one unit of resource by a node per day. Resources can be compute, memory, storage, etc. depending on the DePIN application / $
     'node_resource_provision_rate': [1e6], # daily rate at which resources can be provisioned by a node. Resources can be compute, memory, storage, etc. depending on the DePIN application
     'node_reliability': [0.98], # reliability of a node, which is the probability that the node will be online on the day
-    'node_token_stake': [100000], # amount of DePIN tokens that a node operator needs to stake to participate in the DePIN network / tokens
+    'node_token_stake': [100000, 10000, 100000], # amount of DePIN tokens that a node operator needs to stake to participate in the DePIN network / tokens
     'node_growth_cap' : [10], # maximum daily growth rate of the number of nodes in the DePIN network / %
     
     # DePIN economic parameters
-    'initial_network_resource_demand': [10 * 1e8], # initial network resource demand in the DePIN network / resource units
+    'initial_network_resource_demand': [1e8, 1e8, 1e9], # initial network resource demand in the DePIN network / resource units
     'node_revenue_share': [0.85], # revenue share that the node receives for participating in the DePIN network / -
     'buyback_and_burn_revenue_share': [0.05], # ratio of the revenue that will be used for the buyback and burn mechanism / -
     'foundation_revenue_share': [0.1], # ratio of the revenue that will be kept by the DePIN foundation / -
@@ -31,9 +31,9 @@ sys_params = {
     'network_resource_demand_growth_rate': [0.25], # daily growth rate of the network resource demand / %
     
     # DePIN token parameters
-    'incentive_token_allocation': [0.0], # share of the total token supply allocated to the DePIN foundation for incentives
+    'incentive_token_allocation': [0.5], # share of the total token supply allocated to the DePIN foundation for incentives
     'seller_token_allocation': [0.35], # share of the total token supply allocated to all token selling parties, such as the investors, advisors, and the team
-    'idle_token_allocation': [0.6], # share of the total token supply that is not actively used in the DePIN network
+    'idle_token_allocation': [0.1], # share of the total token supply that is not actively used in the DePIN network
     'seller_token_vesting_duration': [365*3], # duration in days for the seller token vesting schedule
     'incentive_mode': ['fixed_rate'],   # mode of token emission from the incentive bucket.
                                                                                 # It can be 'fixed_rate', 'fixed_weighted_rate' or 'variable_rate'.
