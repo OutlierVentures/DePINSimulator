@@ -3,7 +3,7 @@ Model Parameters
 """
 
 initial_values = {
-    'initial_foundation_cash_reserves': 1e8, # initial cash reserves of the DePIN foundation / $
+    'initial_foundation_cash_reserves': 1e7, # initial cash reserves of the DePIN foundation / $
     'initial_node_change_amount': 1.00, # initial daily rate at which nodes leave the DePIN network. A value of <1.0 means node reduction and >1.0 node increase (scales up and down w.r.t. node APR)
     'token_initial_total_supply': 1e10, # initial total supply of the DePIN token
     'token_initial_valuation': 5e7, # initial valuation of the DePIN token / $
@@ -25,7 +25,7 @@ sys_params = {
     'node_revenue_share': [0.75], # revenue share that the node receives for participating in the DePIN network / -
     'buyback_and_burn_revenue_share': [0.05], # ratio of the revenue that will be used for the buyback and burn mechanism / -
     'foundation_revenue_share': [0.2], # ratio of the revenue that will be kept by the DePIN foundation / -
-    'foundation_cash_burn_rate': [25e5], # annual cash burn rate of the DePIN foundation / $
+    'foundation_cash_burn_rate': [25e4], # annual cash burn rate of the DePIN foundation / $
     'resource_unit_price': [0.00000125], # price of one unit of resource in the DePIN network / $
     'apr_threshold': [20], # annual percentage yield (APR) threshold that node operators find attractive to participate in the DePIN network / %
     'network_resource_demand_growth_rate': [0.1], # daily growth rate of the network resource demand / %
