@@ -18,3 +18,6 @@ Python 3.9 is recommended!
 - Navigate with your terminal to the main project directory.
 - Change the simulation input parameters in `./model/sys_params.py` for the simulation according to your preferences.
 - Run `python DePIN_Simulator.py` within the previously installed and activated environment.
+
+## Example Results
+![Default Parameter Results](./img/default_results.jpg)
