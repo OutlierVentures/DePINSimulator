@@ -118,10 +118,10 @@ def s_network_resource_provision_max(params, substep, state_history, prev_state,
     updated_network_resource_provision_max = policy_input['network_resource_provision_max']
     return ('network_resource_provision_max', updated_network_resource_provision_max)
 
-def s_network_resource_utilization(params, substep, state_history, prev_state, policy_input, **kwargs):
+def s_network_resource_demand_supply_ratio(params, substep, state_history, prev_state, policy_input, **kwargs):
     # update the network resource utilization
-    updated_network_resource_utilization = policy_input['network_resource_utilization']
-    return ('network_resource_utilization', updated_network_resource_utilization)
+    updated_network_resource_demand_supply_ratio = policy_input['network_resource_demand_supply_ratio']
+    return ('network_resource_demand_supply_ratio', updated_network_resource_demand_supply_ratio)
 
 def s_network_revenue(params, substep, state_history, prev_state, policy_input, **kwargs):
     # update the network revenue

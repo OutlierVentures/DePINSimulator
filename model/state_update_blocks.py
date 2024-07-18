@@ -46,7 +46,7 @@ state_update_blocks = [
         'variables': {
             'network_resource_provision': s_network_resource_provision,
             'network_resource_provision_max': s_network_resource_provision_max,
-            'network_resource_utilization': s_network_resource_utilization,
+            'network_resource_demand_supply_ratio': s_network_resource_demand_supply_ratio,
             }
     },
     {

@@ -15,7 +15,7 @@ initial_state = {
     'network_resource_demand': 0,
     'network_resource_provision': 0,
     'network_resource_provision_max': 0,
-    'network_resource_utilization': 0,
+    'network_resource_demand_supply_ratio': 0,
     'network_revenue': 0,
     'buyback_and_burn_revenue': 0,
 

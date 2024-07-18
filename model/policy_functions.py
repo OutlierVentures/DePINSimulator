@@ -72,15 +72,16 @@ def p_node_changes(params, substep, state_history, prev_state, **kwargs):
     # policy logic
     # change amount of nodes based on APR controller
     node_apr_error = (node_apr - apr_threshold)**2 * np.sign(node_apr - apr_threshold) if prev_state['timestep'] > 1 else 0
-    node_apr_error_cum += node_apr_error
+    integral_correction = np.min([apr_threshold / np.abs(node_apr - apr_threshold)**4, 1]) # scale the impact of the discrete integrator part down in case of big errors
+    node_apr_error_cum += node_apr_error * integral_correction
     node_apr_previous_error = (node_apr_m1/apr_threshold-1)**2 * np.sign(node_apr_m1/apr_threshold-1) if len(state_history) > 2 else 0
-    Kp = apr_controller_kp
-    Ki = apr_controller_ki
-    Kd = apr_controller_kd
-    node_change_signal = get_pid_controller_signal(Kp, Ki, Kd, error=node_apr_error, integral=node_apr_error_cum, previous_error=node_apr_previous_error, dt=1)
+    node_change_signal = get_pid_controller_signal(apr_controller_kp, apr_controller_ki, apr_controller_kd, error=node_apr_error, integral=node_apr_error_cum, previous_error=node_apr_previous_error, dt=1)
     node_change_amount = np.min([np.abs(node_change_signal), node_amount*(node_growth_cap/100)]) * np.sign(node_change_signal)
     new_node_amount = np.max([int(node_amount + node_change_amount), 1])
 
+    # ensure boundary conditions are held, such as
+        # 1. there can not be bought and staked more tokens than there are in the LP
+        # 2. there can not be remove more tokens from the stake than there are staked
     # update tokens staked
     token_staked_supply_new = np.multiply(new_node_amount, node_token_stake, dtype=object)
     # prevent the buy of tokens off the market for the initial nodes as we assume the purchased the tokens beforehand
@@ -124,10 +125,10 @@ def p_network_utilization(params, substep, state_history, prev_state, **kwargs):
     ### calculate the actual network resource provision
     network_resource_provision = network_resource_demand if network_resource_demand <= network_resource_provision_max else network_resource_provision_max
     ### calculate the network utilization
-    network_resource_utilization = network_resource_demand / network_resource_provision_max if network_resource_demand >= 0 else 0
+    network_resource_demand_supply_ratio = network_resource_demand / network_resource_provision_max if network_resource_demand >= 0 else 0
 
     return {"network_resource_provision_max": network_resource_provision_max, "network_resource_provision": network_resource_provision,
-            "network_resource_utilization": network_resource_utilization}
+            "network_resource_demand_supply_ratio": network_resource_demand_supply_ratio}
 
 def p_network_revenues(params, substep, state_history, prev_state, **kwargs):
     # calculate the revenue, expenditures, and profits of the network for the next day
@@ -140,13 +141,15 @@ def p_network_revenues(params, substep, state_history, prev_state, **kwargs):
     assert node_revenue_share + buyback_and_burn_revenue_share + foundation_revenue_share == 1, f"revenue shares must add up to 1. Current sum is {node_revenue_share + buyback_and_burn_revenue_share + foundation_revenue_share} with values node_revenue_share:{node_revenue_share}, buyback_and_burn_revenue_share:{buyback_and_burn_revenue_share}, foundation_revenue_share:{foundation_revenue_share}"
 
     # state variables
-    #network_resource_provision = prev_state['network_resource_provision']
+    network_resource_provision = prev_state['network_resource_provision']
     network_resource_demand = prev_state['network_resource_demand']
+
+    network_sold_resource = network_resource_demand
 
     # policy logic
     ## network economics
     ### calculate the network revenue shares
-    network_revenue = network_resource_demand * resource_unit_price
+    network_revenue = network_sold_resource * resource_unit_price
     buyback_and_burn_revenue = network_revenue * buyback_and_burn_revenue_share
     foundation_revenue = network_revenue * foundation_revenue_share
     node_network_revenue = network_revenue * node_revenue_share
@@ -248,6 +251,7 @@ def p_buyback_and_burn(params, substep, state_history, prev_state, **kwargs):
     dex_tokens = prev_state['dex_tokens']
     dex_usdc = prev_state['dex_usdc']
     dex_token_price_usd = prev_state['dex_token_price']
+    token_burned_supply_cum = prev_state['token_burned_supply_cum']
     buyback_and_burn_revenue = prev_state['buyback_and_burn_revenue']
 
     # policy logic
@@ -259,9 +263,9 @@ def p_buyback_and_burn(params, substep, state_history, prev_state, **kwargs):
     new_dex_usdc = dex_usdc + delta_dex_usdc
 
     token_burned_supply = -delta_dex_tokens
-    token_burned_supply_cum = prev_state['token_burned_supply_cum'] + token_burned_supply
+    token_burned_supply_cum_new = token_burned_supply_cum + token_burned_supply
 
-    return {"dex_tokens": new_dex_tokens, "dex_usdc": new_dex_usdc, "dex_token_price": dex_token_price, "token_burned_supply": token_burned_supply, "token_burned_supply_cum": token_burned_supply_cum}
+    return {"dex_tokens": new_dex_tokens, "dex_usdc": new_dex_usdc, "dex_token_price": dex_token_price, "token_burned_supply": token_burned_supply, "token_burned_supply_cum": token_burned_supply_cum_new}
 
 def p_ecosystem_metrics(params, substep, state_history, prev_state, **kwargs):
     # calculate the circulating supply and total supply of the token
