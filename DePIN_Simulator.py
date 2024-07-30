@@ -102,7 +102,7 @@ def main():
 
         # Node Expenditures
         axarr[3,1].plot(rdf.timestep, rdf.node_expenditures, color=list(mcolors.TABLEAU_COLORS.keys())[subset])
-        axarr[3,1].set_title('Node Expenditures / %')
+        axarr[3,1].set_title('Node Expenditures / $')
         axarr[3,1].set_xlabel('Days')
         axarr[3,1].grid('on', which='both')
         axarr[3,1].set_yscale('log')
@@ -114,8 +114,6 @@ def main():
         axarr[0,2].set_yscale('log')
 
         # Liquidity Pool Reserves
-        print(rdf.dex_tokens)
-        print(rdf.dex_usdc)
         axarr[1,2].plot(rdf.timestep, rdf.dex_tokens, color=list(mcolors.TABLEAU_COLORS.keys())[subset], linestyle='solid')
         axarr[1,2].plot(rdf.timestep, rdf.dex_usdc, color=list(mcolors.TABLEAU_COLORS.keys())[subset], linestyle='dashed')
         axarr[1,2].set_title('Liquidity Pool Reserves / $')
