@@ -206,7 +206,8 @@ def p_node_economics(params, substep, state_history, prev_state, **kwargs):
     node_base_cost = node_setup_cost + node_token_stake * dex_token_price
 
     # print node economic variables
-    node_apr = np.max([((node_profit/node_amount*365) / node_base_cost) * 100, 0]) if token_staked_supply > 0 else 0
+    node_apr = ((node_profit/node_amount*365) / node_base_cost) * 100 if token_staked_supply > 0 else 0
+
 
     return {"node_profit": node_profit, "node_incentive_revenue": node_incentive_revenue,
             "node_expenditures": node_expenditures, "node_apr": node_apr,

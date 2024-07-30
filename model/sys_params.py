@@ -19,10 +19,10 @@ sys_params = {
     'node_reliability': [0.98], # reliability of a node, which is the probability that the node will be online on the day
     'node_token_stake': [10000], # amount of DePIN tokens that a node operator needs to stake to participate in the DePIN network / tokens
     'node_growth_cap' : [10], # maximum daily growth rate of the number of nodes in the DePIN network / %
-    'apr_threshold': [10, 20, 10], # annual percentage yield (APR) threshold that node operators find attractive to participate in the DePIN network / %
+    'apr_threshold': [10], # annual percentage yield (APR) threshold that node operators find attractive to participate in the DePIN network / %
     
     # DePIN economic parameters
-    'initial_network_resource_demand': [1e10, 1e10, 1e8], # initial network resource demand in the DePIN network / resource units
+    'initial_network_resource_demand': [1e9, 1e10, 1e10], # initial network resource demand in the DePIN network / resource units
     'node_revenue_share': [0.75], # revenue share that the node receives for participating in the DePIN network / -
     'buyback_and_burn_revenue_share': [0.01], # ratio of the revenue that will be used for the buyback and burn mechanism / -
     'foundation_revenue_share': [0.24], # ratio of the revenue that will be kept by the DePIN foundation / -
@@ -41,7 +41,7 @@ sys_params = {
                                                                                 # fixed weighted means that the emissions are predefined,
                                                                                 # but can be weighted to be higher at the beginning of the simulation,
                                                                                 # while variable means that the incentives will be emitted at a variable rate based on the APR threshold
-    'incentive_token_vesting_duration': [365*4], # duration in days for the incentive token incentive emissions. Only applicable for 'fixed_rate' and 'fixed_weighted_rate' modes
+    'incentive_token_vesting_duration': [365*4, 365*4, 365*8], # duration in days for the incentive token incentive emissions. Only applicable for 'fixed_rate' and 'fixed_weighted_rate' modes
     'incentive_early_weight_ratio': [0.8], # ratio of the total incentives that will be emitted in the first half of the incentives token emission duration. Only applicable for 'fixed_weighted_rate' mode
     'token_mint_model': ['mint_fixed_rate'],    # mode of token minting.
                                                 # It can be "mint_apr_threshold", "mint_fixed_rate", or "mint_fixed_weighted_rate".

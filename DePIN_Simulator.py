@@ -118,6 +118,7 @@ def main():
         axarr[1,2].plot(rdf.timestep, rdf.dex_usdc, color=list(mcolors.TABLEAU_COLORS.keys())[subset], linestyle='dashed')
         axarr[1,2].set_title('Liquidity Pool Reserves / $')
         axarr[1,2].grid('on', which='both')
+        axarr[1,2].set_yscale('log')
         axarr[1,2].legend(custom_lines, ['Token', 'USDC'])
 
         # Token Vesting
