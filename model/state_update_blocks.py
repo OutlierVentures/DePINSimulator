@@ -24,28 +24,12 @@ state_update_blocks = [
             }
     },
     {
-        'label': 'p_node_changes',
-        'policies': {
-            'p_node_changes': p_node_changes,
-            },
-        'variables': {
-            'node_amount': s_node_amount,
-            'node_change_amount': s_node_change_amount,
-            'token_staked_supply': s_token_staked_supply,
-            'dex_tokens': s_dex_liquidity_tokens,
-            'dex_usdc': s_dex_liquidity_usdc,
-            'dex_token_price': s_dex_liquidity_token_price,
-            'node_apr_error_cum': s_node_apr_error_cum
-            }
-    },
-    {
         'label': 'p_network_utilization',
         'policies': {
             'p_network_utilization': p_network_utilization,
             },
         'variables': {
             'network_resource_provision': s_network_resource_provision,
-            'network_resource_provision_max': s_network_resource_provision_max,
             'network_resource_demand_supply_ratio': s_network_resource_demand_supply_ratio,
             }
     },
@@ -109,6 +93,21 @@ state_update_blocks = [
             'dex_token_price': s_dex_liquidity_token_price,
             'token_burned_supply': s_token_burned_supply,
             'token_burned_supply_cum': s_token_burned_supply_cum
+            }
+    },
+    {
+        'label': 'p_node_changes',
+        'policies': {
+            'p_node_changes': p_node_changes,
+            },
+        'variables': {
+            'node_amount': s_node_amount,
+            'node_change_amount': s_node_change_amount,
+            'token_staked_supply': s_token_staked_supply,
+            'dex_tokens': s_dex_liquidity_tokens,
+            'dex_usdc': s_dex_liquidity_usdc,
+            'dex_token_price': s_dex_liquidity_token_price,
+            'node_apr_error_cum': s_node_apr_error_cum
             }
     },
     {

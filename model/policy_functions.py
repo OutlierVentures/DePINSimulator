@@ -59,6 +59,7 @@ def p_node_changes(params, substep, state_history, prev_state, **kwargs):
     apr_controller_kp = params['apr_controller_kp']
     apr_controller_ki = params['apr_controller_ki']
     apr_controller_kd = params['apr_controller_kd']
+    node_reliability = params['node_reliability']
 
     # state variables
     node_apr = prev_state['node_apr']
@@ -68,6 +69,8 @@ def p_node_changes(params, substep, state_history, prev_state, **kwargs):
     dex_usdc = prev_state['dex_usdc']
     dex_token_price_usd = prev_state['dex_token_price']
     node_apr_m1 = state_history[-2][-1]['node_apr'] if len(state_history) > 2 else 0
+    network_resource_demand = prev_state['network_resource_demand']
+    network_resource_provision = prev_state['network_resource_provision']
 
     # policy logic
     # change amount of nodes based on APR controller
@@ -77,11 +80,17 @@ def p_node_changes(params, substep, state_history, prev_state, **kwargs):
     node_apr_previous_error = (node_apr_m1/apr_threshold-1)**2 * np.sign(node_apr_m1/apr_threshold-1) if len(state_history) > 2 else 0
     node_change_signal = get_pid_controller_signal(apr_controller_kp, apr_controller_ki, apr_controller_kd, error=node_apr_error, integral=node_apr_error_cum, previous_error=node_apr_previous_error, dt=1)
     node_change_amount = np.min([np.abs(node_change_signal), node_amount*(node_growth_cap/100)]) * np.sign(node_change_signal)
-    new_node_amount = np.max([int(node_amount + node_change_amount), 1])
+    
 
     # ensure boundary conditions are held, such as
-        # 1. there can not be bought and staked more tokens than there are in the LP
-        # 2. there can not be remove more tokens from the stake than there are staked
+        # 0. there can't be less than one node
+        # 1. there can't be more nodes that there is demand for the delivered resources (disabled at the moment)
+        # 2. there can not be bought and staked more tokens than there are in the LP
+        # 3. there can not be remove more tokens from the stake than there are staked
+    # node minimum amount
+    new_node_amount = np.max([int(node_amount + node_change_amount), 1])
+    # node maximum amount w.r.t. resource demand
+    #new_node_amount = np.min([int(network_resource_demand / (node_reliability * params['node_resource_provision_rate'])), new_node_amount])
     # update tokens staked
     token_staked_supply_new = np.multiply(new_node_amount, node_token_stake, dtype=object)
     # prevent the buy of tokens off the market for the initial nodes as we assume the purchased the tokens beforehand
@@ -112,7 +121,7 @@ def p_network_utilization(params, substep, state_history, prev_state, **kwargs):
     # calculate the network resource utilization for the next day
     
     # parameters
-    node_amount = prev_state['node_amount']
+    node_amount = prev_state['node_amount'] if prev_state['timestep'] > 1 else params['initial_node_amount']
     node_resource_provision_rate = params['node_resource_provision_rate']
     node_reliability = params['node_reliability']
 
@@ -120,15 +129,12 @@ def p_network_utilization(params, substep, state_history, prev_state, **kwargs):
     network_resource_demand = prev_state['network_resource_demand']
 
     # policy logic
-    ### calculate the maximum resource provision that the network can provide
-    network_resource_provision_max = node_amount * node_resource_provision_rate * node_reliability
     ### calculate the actual network resource provision
-    network_resource_provision = network_resource_demand if network_resource_demand <= network_resource_provision_max else network_resource_provision_max
+    network_resource_provision = node_amount * node_resource_provision_rate * node_reliability
     ### calculate the network utilization
-    network_resource_demand_supply_ratio = network_resource_demand / network_resource_provision_max if network_resource_demand >= 0 else 0
+    network_resource_demand_supply_ratio = network_resource_demand / network_resource_provision if network_resource_demand >= 0 else 0
 
-    return {"network_resource_provision_max": network_resource_provision_max, "network_resource_provision": network_resource_provision,
-            "network_resource_demand_supply_ratio": network_resource_demand_supply_ratio}
+    return {"network_resource_provision": network_resource_provision, "network_resource_demand_supply_ratio": network_resource_demand_supply_ratio}
 
 def p_network_revenues(params, substep, state_history, prev_state, **kwargs):
     # calculate the revenue, expenditures, and profits of the network for the next day
