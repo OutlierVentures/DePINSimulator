@@ -58,7 +58,6 @@ def main():
 
         rdf = run.postprocessing(subset_df)
 
-
         # Network Resource Demand
         axarr[0,0].plot(rdf.timestep, rdf.network_resource_demand, label=legend_text, color=list(mcolors.TABLEAU_COLORS.keys())[subset])
         axarr[0,0].set_title('Network Resource Demand / Resource Units')
@@ -115,8 +114,10 @@ def main():
         axarr[0,2].set_yscale('log')
 
         # Liquidity Pool Reserves
-        axarr[1,2].plot(rdf.timestep, rdf.dex_tokens, color=list(mcolors.TABLEAU_COLORS.keys())[subset])
-        axarr[1,2].plot(rdf.timestep, rdf.dex_usdc, color=list(mcolors.TABLEAU_COLORS.keys())[subset])
+        print(rdf.dex_tokens)
+        print(rdf.dex_usdc)
+        axarr[1,2].plot(rdf.timestep, rdf.dex_tokens, color=list(mcolors.TABLEAU_COLORS.keys())[subset], linestyle='solid')
+        axarr[1,2].plot(rdf.timestep, rdf.dex_usdc, color=list(mcolors.TABLEAU_COLORS.keys())[subset], linestyle='dashed')
         axarr[1,2].set_title('Liquidity Pool Reserves / $')
         axarr[1,2].grid('on', which='both')
         axarr[1,2].legend(custom_lines, ['Token', 'USDC'])
