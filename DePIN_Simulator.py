@@ -54,6 +54,10 @@ def main():
             try:
                 legend_text += f'{key_formatted}: {"{:.2e}".format(value[subset])}; '
             except:
+                try:
+                    legend_text += f'{key_formatted}: {value[subset]}; '
+                except:
+                    pass
                 pass
 
         rdf = run.postprocessing(subset_df)
@@ -122,8 +126,8 @@ def main():
         axarr[1,2].legend(custom_lines, ['Token', 'USDC'])
 
         # Token Vesting
-        axarr[2,2].plot(rdf.timestep, rdf.token_seller_vested, color=list(mcolors.TABLEAU_COLORS.keys())[subset], label='Seller Vested', linestyle='solid')
-        axarr[2,2].plot(rdf.timestep, rdf.token_incentives_vested, color=list(mcolors.TABLEAU_COLORS.keys())[subset], label='Incentive Vested', linestyle='dashed')
+        axarr[2,2].plot(rdf.timestep, rdf.token_seller_vested_cum, color=list(mcolors.TABLEAU_COLORS.keys())[subset], label='Seller Vested', linestyle='solid')
+        axarr[2,2].plot(rdf.timestep, rdf.token_incentives_vested_cum, color=list(mcolors.TABLEAU_COLORS.keys())[subset], label='Incentive Vested', linestyle='dashed')
         axarr[2,2].set_title('Cumulative Token Vesting / Tokens')
         axarr[2,2].legend(custom_lines, ['Seller Vested', 'Incentive Vested'])
         axarr[2,2].grid('on', which='both')

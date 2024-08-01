@@ -24,6 +24,7 @@ def p_token_vesting(params, substep, state_history, prev_state, **kwargs):
     idle_token_allocation = params['idle_token_allocation'] * token_initial_total_supply
     seller_token_vesting_duration = params['seller_token_vesting_duration']
     incentive_token_vesting_duration = params['incentive_token_vesting_duration']
+    incentive_early_weight_ratio = params['incentive_early_weight_ratio']
     initial_node_amount = params['initial_node_amount']
     node_token_stake = params['node_token_stake']
     assert seller_token_allocation >= initial_node_amount * node_token_stake, f"seller token allocation must be greater than the initial node amount times the node token stake. Current values are seller_token_allocation:{seller_token_allocation} vs. initial_node_amount x node_token_stake = {initial_node_amount*node_token_stake} with initial_node_amount:{initial_node_amount}, node_token_stake:{node_token_stake}"
@@ -41,10 +42,15 @@ def p_token_vesting(params, substep, state_history, prev_state, **kwargs):
     # policy logic
     if incentive_mode == 'fixed_rate':
         token_incentives_vested = incentive_token_allocation / incentive_token_vesting_duration if (token_incentives_vested_cum + incentive_token_allocation / incentive_token_vesting_duration) <= incentive_token_allocation else (incentive_token_allocation - token_incentives_vested_cum)
-        token_seller_vested = seller_token_allocation / seller_token_vesting_duration if (token_seller_vested_cum + seller_token_allocation / seller_token_vesting_duration) <= seller_token_allocation else (seller_token_allocation - token_seller_vested_cum)
-
         token_incentives_vested_cum += token_incentives_vested
-        token_seller_vested_cum += token_seller_vested
+
+    elif incentive_mode == 'fixed_weighted_rate':
+        token_incentives_vested_increment = (incentive_token_allocation * incentive_early_weight_ratio) / (incentive_token_vesting_duration/2) if prev_state['timestep'] < incentive_token_vesting_duration / 2 else (incentive_token_allocation * (1 - incentive_early_weight_ratio)) / (incentive_token_vesting_duration/2)
+        token_incentives_vested = token_incentives_vested_increment if (token_incentives_vested_cum + token_incentives_vested_increment) <= incentive_token_allocation else (incentive_token_allocation - token_incentives_vested_cum)
+        token_incentives_vested_cum += token_incentives_vested
+
+    token_seller_vested = seller_token_allocation / seller_token_vesting_duration if (token_seller_vested_cum + seller_token_allocation / seller_token_vesting_duration) <= seller_token_allocation else (seller_token_allocation - token_seller_vested_cum)
+    token_seller_vested_cum += token_seller_vested
 
     return {"token_incentives_vested": token_incentives_vested, "token_seller_vested": token_seller_vested, "token_incentives_vested_cum": token_incentives_vested_cum, "token_seller_vested_cum": token_seller_vested_cum}
 
