@@ -66,7 +66,7 @@ def main():
         axarr[0,0].plot(rdf.timestep, rdf.network_resource_demand, label=legend_text, color=list(mcolors.TABLEAU_COLORS.keys())[subset])
         axarr[0,0].set_title('Network Resource Demand / Resource Units')
         axarr[0,0].grid('on', which='both')
-        axarr[0,0].legend()
+        axarr[0,0].legend(loc=1, prop={'size': 5})
 
          # Network Utilization
         axarr[1,0].plot(rdf.timestep, rdf.network_resource_demand_supply_ratio, color=list(mcolors.TABLEAU_COLORS.keys())[subset])

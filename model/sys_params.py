@@ -19,7 +19,7 @@ sys_params = {
     'node_reliability': [0.98], # reliability of a node, which is the probability that the node will be online on the day
     'node_token_stake': [10000], # amount of DePIN tokens that a node operator needs to stake to participate in the DePIN network / tokens
     'node_growth_cap' : [10], # maximum daily growth rate of the number of nodes in the DePIN network / %
-    'apr_threshold': [10], # annual percentage yield (APR) threshold that node operators find attractive to participate in the DePIN network / %
+    'apr_threshold': [10, 20, 10], # annual percentage yield (APR) threshold that node operators find attractive to participate in the DePIN network / %
     
     # DePIN economic parameters
     'initial_network_resource_demand': [1e10, 1e10, 5e10], # initial network resource demand in the DePIN network / resource units
@@ -40,7 +40,7 @@ sys_params = {
                                                                 # Fixed means that the incentives will be emitted at a fixed rate,
                                                                 # fixed weighted means that the emissions are predefined,
                                                                 # but can be weighted to be higher at the beginning of the simulation
-    'incentive_token_vesting_duration': [365*2, 365*4, 365*2], # duration in days for the incentive token incentive emissions. Only applicable for 'fixed_rate' and 'fixed_weighted_rate' modes
+    'incentive_token_vesting_duration': [365*2, 365*4, 365*4], # duration in days for the incentive token incentive emissions. Only applicable for 'fixed_rate' and 'fixed_weighted_rate' modes
     'incentive_early_weight_ratio': [0.8], # ratio of the total incentives that will be emitted in the first half of the incentives token emission duration. Only applicable for 'fixed_weighted_rate' mode
     'token_mint_model': ['none'],    # mode of token minting (not implemented yet).
                                         # It can be "none", "mint_fixed_rate", or "mint_fixed_weighted_rate".
