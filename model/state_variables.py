@@ -45,4 +45,7 @@ initial_state = {
 
     # model variables
     'node_apr_error_cum': 0,
+    
+    # cost function variables
+    'step_cost_data': {},
 }

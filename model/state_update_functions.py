@@ -103,6 +103,9 @@ def s_token_circulating_supply(params, substep, state_history, prev_state, polic
     updated_token_circulating_supply = policy_input['token_circulating_supply']
     return ('token_circulating_supply', updated_token_circulating_supply)
 
+def s_step_cost_data(params, substep, state_history, prev_state, policy_input, **kwargs):
+    return ('step_cost_data', policy_input['step_cost_data'])
+
 def s_token_staked_supply(params, substep, state_history, prev_state, policy_input, **kwargs):
     # update the token staked supply
     updated_token_staked_supply = policy_input['token_staked_supply']

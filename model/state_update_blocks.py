@@ -120,5 +120,14 @@ state_update_blocks = [
             'token_circulating_supply': s_token_circulating_supply
             }
     },
+    {
+        'label': 'p_cost_calculation',
+        'policies': {
+            'p_calculate_step_cost': p_calculate_step_cost,
+            },
+        'variables': {
+            'step_cost_data': s_step_cost_data
+            }
+    },
 
 ]

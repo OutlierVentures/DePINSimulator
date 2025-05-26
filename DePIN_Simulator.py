@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 from matplotlib.lines import Line2D
+from tqdm import tqdm
 
 # radCAD
 from radcad import Model, Simulation, Experiment
@@ -25,9 +26,17 @@ model = Model(initial_state=initial_state, params=sys_params, state_update_block
 simulation = Simulation(model=model, timesteps=TIMESTEPS, runs=MONTE_CARLO_RUNS)
 
 def main():
+    print("🚀 Starting DePIN Simulation...")
+    print(f"📊 Simulating {TIMESTEPS:,} timesteps ({TIMESTEPS/365:.1f} years) with {MONTE_CARLO_RUNS} run(s)")
+    print("⚡ Cost function analysis included (visualization coming with Streamlit UI)")
+    print()
 
-    # run the simulation
+    # run the simulation with progress bar
+    print("🔄 Running simulation...")
     result = simulation.run()
+    print("✅ Simulation complete!")
+    
+    print("📈 Generating charts...")
     df = pd.DataFrame(result)
     # get amount of distinct subsets in the simulation
     subsets = df['subset'].unique()
@@ -164,6 +173,7 @@ def main():
         axarr[3,3].grid('on', which='both')
 
     plt.tight_layout()
+    print("🎨 Charts generated successfully!")
     plt.show()
 
 

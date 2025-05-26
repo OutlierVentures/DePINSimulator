@@ -2,3 +2,5 @@ numpy
 radcad
 typing-extensions
 matplotlib
+tqdm
+pandas

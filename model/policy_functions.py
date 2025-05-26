@@ -301,4 +301,22 @@ def p_ecosystem_metrics(params, substep, state_history, prev_state, **kwargs):
     token_circulating_supply = dex_tokens + token_staked_supply + idle_token_allocation
 
     return {"token_total_supply": token_total_supply, "token_circulating_supply": token_circulating_supply}
+
+
+def p_calculate_step_cost(params, substep, state_history, prev_state, **kwargs):
+    """
+    Calculate cost function at each timestep for policy evaluation
+    Based on optimal control theory framework
+    """
+    from .cost_functions import calculate_step_cost
+    
+    # Get previous state for price volatility calculation
+    previous_state = None
+    if len(state_history) >= 2:
+        previous_state = state_history[-2][-1]  # Get the state dict from previous timestep
+    
+    # Calculate step cost using the cost function framework
+    cost_data = calculate_step_cost(prev_state, previous_state)
+    
+    return {'step_cost_data': cost_data}
                                              
