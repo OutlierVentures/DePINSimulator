@@ -1,0 +1,1 @@
+# Diagnostic tests and validation scripts for DePIN Simulator 
