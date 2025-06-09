@@ -3,12 +3,29 @@ import sys
 from .utils import *
 
 def p_network_demand(params, substep, state_history, prev_state, **kwargs):
-    # calculate the network resource demand for the next day
+    # calculate the network resource demand for the next day with saturation when approaching capacity
     
+    # Get base growth rate and current utilization
+    base_growth_rate = params['network_resource_demand_growth_rate'] / 100
+    current_utilization = prev_state.get('network_resource_demand_supply_ratio', 0)
+    
+    # Apply demand saturation when near capacity (Volt Capital approach)
+    if current_utilization >= 0.95:
+        # Quadratic slowdown to prevent infinite accumulation
+        saturation_factor = (0.95 / max(current_utilization, 0.95)) ** 2
+        adjusted_growth_rate = base_growth_rate * saturation_factor
+    else:
+        adjusted_growth_rate = base_growth_rate
+    
+    # Calculate new demand with adjusted growth rate
     if prev_state['network_resource_demand'] != 0:
-        network_resource_demand =  (1+params['network_resource_demand_growth_rate']/100) * prev_state['network_resource_demand']
+        network_resource_demand = (1 + adjusted_growth_rate) * prev_state['network_resource_demand']
     else:
         network_resource_demand = params['initial_network_resource_demand']
+    
+    # REMOVED: Faulty supply-demand balancing logic
+    # The original logic was backwards and creating economic unrealism
+    # Supply-demand balancing should happen in revenue calculations, not demand generation
     
     return {'network_resource_demand': network_resource_demand}
 
@@ -137,8 +154,9 @@ def p_network_utilization(params, substep, state_history, prev_state, **kwargs):
     # policy logic
     ### calculate the actual network resource provision
     network_resource_provision = node_amount * node_resource_provision_rate * node_reliability
-    ### calculate the network utilization
-    network_resource_demand_supply_ratio = network_resource_demand / network_resource_provision if network_resource_demand >= 0 else 0
+    ### calculate the network utilization - cap at 100% (physically impossible to exceed)
+    utilization_ratio = network_resource_demand / network_resource_provision if network_resource_provision > 0 else 0
+    network_resource_demand_supply_ratio = min(1.0, utilization_ratio)
 
     return {"network_resource_provision": network_resource_provision, "network_resource_demand_supply_ratio": network_resource_demand_supply_ratio}
 
@@ -156,7 +174,8 @@ def p_network_revenues(params, substep, state_history, prev_state, **kwargs):
     network_resource_provision = prev_state['network_resource_provision']
     network_resource_demand = prev_state['network_resource_demand']
 
-    network_sold_resource = network_resource_demand
+    # Volt Capital approach: can only sell what network can actually provide
+    network_sold_resource = min(network_resource_demand, network_resource_provision)
 
     # policy logic
     ## network economics

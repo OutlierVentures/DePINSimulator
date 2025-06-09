@@ -1,2 +1,30 @@
 venv
 .venv
+
+# Cursor IDE rules (local development)
+.cursorrules
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Development files
+*.log
+.DS_Store
+
+# Temporary diagnostic files
+*_diagnostic.py
+*_diagnostic.png
+validation_check.py
+
+# IDE files
+.vscode/
+.idea/
+
+# Jupyter notebooks
+*.ipynb_checkpointshtmlcov/
+.coverage
+.pytest_cache/

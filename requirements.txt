@@ -4,3 +4,8 @@ typing-extensions
 matplotlib
 tqdm
 pandas
+
+# Testing dependencies
+pytest
+pytest-cov
+pytest-mock
