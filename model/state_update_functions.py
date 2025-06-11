@@ -38,6 +38,11 @@ def s_token_seller_vested_cum(params, substep, state_history, prev_state, policy
     updated_token_seller_vested_cum = policy_input['token_seller_vested_cum']
     return ('token_seller_vested_cum', updated_token_seller_vested_cum)
 
+def s_emission_cap_utilization(params, substep, state_history, prev_state, policy_input, **kwargs):
+    # update the emission cap utilization percentage
+    updated_emission_cap_utilization = policy_input['emission_cap_utilization']
+    return ('emission_cap_utilization', updated_emission_cap_utilization)
+
 def s_node_amount(params, substep, state_history, prev_state, policy_input, **kwargs):
     # update node amount
     updated_node_amount = policy_input['node_amount']

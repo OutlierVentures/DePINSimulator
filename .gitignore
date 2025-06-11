@@ -28,3 +28,6 @@ validation_check.py
 *.ipynb_checkpointshtmlcov/
 .coverage
 .pytest_cache/
+
+# test images
+*.png

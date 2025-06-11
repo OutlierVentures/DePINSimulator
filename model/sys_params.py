@@ -116,6 +116,38 @@ sys_params = {
                                   # Could implement BME in future phases
     
     
+    # ===== EMISSION POLICY PARAMETERS =====
+    # Different strategies for distributing incentive tokens to node operators
+    
+    'emission_policy': ['linear'],     # Options: 'linear', 'per_device', 'bme'
+                                   # 'linear': Fixed daily emission over vesting period (default)
+                                   # 'per_device': Emissions scale with active node count
+                                   # 'bme': Usage-driven burn-and-mint equilibrium
+    
+    'emission_per_device_daily': [100],  # Tokens per active node per day (for per_device policy)
+                                        # Must be calibrated to avoid budget overrun
+                                        # Current: 100 tokens/node/day × 5000 nodes = 500k/day
+    
+    'emission_device_cap_daily': [500000],  # Max daily emission regardless of node count
+                                           # Prevents runaway emissions during rapid growth
+                                           # Set to maintain ~2 year total emission schedule
+    
+    'emission_cap_enabled': [True],        # Enable/disable emission cap enforcement
+                                          # True: Enforce daily cap (default behavior)
+                                          # False: Only budget limit applies (research mode)
+    
+    # ===== BME EMISSION POLICY PARAMETERS =====
+    # Burn-and-Mint Equilibrium parameters for usage-driven token economics
+    
+    'bme_burn_rate_multiplier': [1.0],    # BME burn rate = network_revenue * multiplier
+                                          # 1.0 = burn equivalent to network revenue
+                                          # Higher values = more aggressive burning
+    
+    'bme_mint_rate_multiplier': [1.0],    # BME mint rate = burn_amount * multiplier  
+                                          # 1.0 = mint equal to burn (equilibrium)
+                                          # >1.0 = inflationary, <1.0 = deflationary
+    
+    
     # ===== APR CONTROLLER PARAMETERS =====
     # PID controller gains tuned for stability (reduced from aggressive defaults)
     
@@ -167,6 +199,17 @@ def validate_params():
         print(f"✅ Economic validation: Max payback period {payback_days:.0f} days")
     else:
         print(f"⚠️  Economic warning: Node economics may be unprofitable")
+    
+    # Emission policy validation
+    emission_policy = sys_params['emission_policy'][0]
+    if emission_policy == 'per_device':
+        initial_nodes = sys_params['initial_node_amount'][0]
+        per_device_rate = sys_params['emission_per_device_daily'][0]
+        device_cap = sys_params['emission_device_cap_daily'][0]
+        initial_daily_emission = min(initial_nodes * per_device_rate, device_cap)
+        total_incentive_tokens = sys_params['incentive_token_allocation'][0] * initial_values['token_initial_total_supply']
+        estimated_emission_days = total_incentive_tokens / initial_daily_emission if initial_daily_emission > 0 else float('inf')
+        print(f"✅ Per-device emission: {initial_daily_emission:,.0f} tokens/day initially, ~{estimated_emission_days:.0f} day budget")
     
     return True
 

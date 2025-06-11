@@ -20,7 +20,8 @@ state_update_blocks = [
             'token_incentives_vested': s_token_incentives_vested,
             'token_seller_vested': s_token_seller_vested,
             'token_incentives_vested_cum': s_token_incentives_vested_cum,
-            'token_seller_vested_cum': s_token_seller_vested_cum
+            'token_seller_vested_cum': s_token_seller_vested_cum,
+            'emission_cap_utilization': s_emission_cap_utilization
             }
     },
     {

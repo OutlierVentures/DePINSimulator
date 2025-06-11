@@ -37,6 +37,7 @@ initial_state = {
     'token_incentives_vested_cum': 0,
     'token_seller_vested': 0,
     'token_seller_vested_cum': 0,
+    'emission_cap_utilization': 0,
 
     # market making
     'dex_tokens': initial_values['liquidity_token_allocation'] * initial_values['token_initial_total_supply'],

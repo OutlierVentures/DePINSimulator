@@ -34,6 +34,7 @@ def p_token_vesting(params, substep, state_history, prev_state, **kwargs):
     
     # parameters
     incentive_mode = params['incentive_mode']
+    emission_policy = params['emission_policy']
     token_initial_total_supply = state_history[0][-1]['token_total_supply']
     liquidity_token_allocation = state_history[0][-1]['dex_tokens']
     incentive_token_allocation = params['incentive_token_allocation'] * token_initial_total_supply
@@ -56,20 +57,85 @@ def p_token_vesting(params, substep, state_history, prev_state, **kwargs):
     token_seller_vested = prev_state['token_seller_vested']
     token_seller_vested_cum = prev_state['token_seller_vested_cum']
 
-    # policy logic
-    if incentive_mode == 'fixed_rate':
+    # policy logic for incentive emissions
+    if emission_policy == 'per_device':
+        # Per-device emission: scale with active node count
+        active_nodes = prev_state['node_amount'] if prev_state['timestep'] > 1 else initial_node_amount
+        emission_per_device = params['emission_per_device_daily']
+        emission_cap = params['emission_device_cap_daily']
+        
+        # Calculate device-based emission with optional cap
+        device_based_emission = active_nodes * emission_per_device
+        
+        # Apply cap if enabled, otherwise only budget-limited
+        if params['emission_cap_enabled']:
+            capped_emission = min(device_based_emission, emission_cap)
+            emission_cap_utilization = (device_based_emission / emission_cap * 100) if emission_cap > 0 else 0
+        else:
+            capped_emission = device_based_emission  # Only budget-limited
+            emission_cap_utilization = 0  # N/A when cap disabled
+        
+        # Ensure we don't exceed total incentive allocation
+        remaining_incentive_budget = incentive_token_allocation - token_incentives_vested_cum
+        token_incentives_vested = min(capped_emission, remaining_incentive_budget) if remaining_incentive_budget > 0 else 0
+        token_incentives_vested_cum += token_incentives_vested
+        
+    elif emission_policy == 'linear':
+        # Linear emission: fixed daily emission over vesting period
+        emission_cap_utilization = 0  # N/A for linear emission policies
+        
+        if incentive_mode == 'fixed_rate':
+            token_incentives_vested = incentive_token_allocation / incentive_token_vesting_duration if (token_incentives_vested_cum + incentive_token_allocation / incentive_token_vesting_duration) <= incentive_token_allocation else (incentive_token_allocation - token_incentives_vested_cum)
+            token_incentives_vested_cum += token_incentives_vested
+
+        elif incentive_mode == 'fixed_weighted_rate':
+            token_incentives_vested_increment = (incentive_token_allocation * incentive_early_weight_ratio) / (incentive_token_vesting_duration/2) if prev_state['timestep'] < incentive_token_vesting_duration / 2 else (incentive_token_allocation * (1 - incentive_early_weight_ratio)) / (incentive_token_vesting_duration/2)
+            token_incentives_vested = token_incentives_vested_increment if (token_incentives_vested_cum + token_incentives_vested_increment) <= incentive_token_allocation else (incentive_token_allocation - token_incentives_vested_cum)
+            token_incentives_vested_cum += token_incentives_vested
+            
+    elif emission_policy == 'bme':
+        # BME emission: usage-driven burn-and-mint equilibrium
+        bme_burn_rate_multiplier = params['bme_burn_rate_multiplier']
+        bme_mint_rate_multiplier = params['bme_mint_rate_multiplier']
+        resource_unit_price = params['resource_unit_price']
+        
+        # Calculate usage-driven emission based on network activity
+        # Use network_sold_resource (from p_network_revenues) for BME calculation
+        network_sold_resource = min(prev_state['network_resource_demand'], prev_state['network_resource_provision']) if prev_state['network_resource_provision'] > 0 else 0
+        
+        # BME logic: burn equivalent = network usage value, mint = burn * multiplier
+        burn_equivalent = float(network_sold_resource * resource_unit_price * bme_burn_rate_multiplier)
+        bme_emission = float(burn_equivalent * bme_mint_rate_multiplier)
+        
+
+        
+        # Apply cap if enabled, otherwise only budget-limited
+        if params['emission_cap_enabled']:
+            emission_cap = params['emission_device_cap_daily']
+            capped_emission = min(bme_emission, emission_cap)
+            emission_cap_utilization = (bme_emission / emission_cap * 100) if emission_cap > 0 else 0
+        else:
+            capped_emission = bme_emission  # Only budget-limited
+            emission_cap_utilization = 0  # N/A when cap disabled (usage-driven)
+        
+        # Ensure we don't exceed total incentive allocation
+        remaining_incentive_budget = incentive_token_allocation - token_incentives_vested_cum
+        token_incentives_vested = float(min(capped_emission, remaining_incentive_budget)) if remaining_incentive_budget > 0 else 0.0
+        token_incentives_vested_cum += token_incentives_vested
+        
+
+        
+    else:
+        # Fallback: Default to linear emission for unknown policies
+        emission_cap_utilization = 0
         token_incentives_vested = incentive_token_allocation / incentive_token_vesting_duration if (token_incentives_vested_cum + incentive_token_allocation / incentive_token_vesting_duration) <= incentive_token_allocation else (incentive_token_allocation - token_incentives_vested_cum)
         token_incentives_vested_cum += token_incentives_vested
 
-    elif incentive_mode == 'fixed_weighted_rate':
-        token_incentives_vested_increment = (incentive_token_allocation * incentive_early_weight_ratio) / (incentive_token_vesting_duration/2) if prev_state['timestep'] < incentive_token_vesting_duration / 2 else (incentive_token_allocation * (1 - incentive_early_weight_ratio)) / (incentive_token_vesting_duration/2)
-        token_incentives_vested = token_incentives_vested_increment if (token_incentives_vested_cum + token_incentives_vested_increment) <= incentive_token_allocation else (incentive_token_allocation - token_incentives_vested_cum)
-        token_incentives_vested_cum += token_incentives_vested
-
+    # seller token vesting (unchanged)
     token_seller_vested = seller_token_allocation / seller_token_vesting_duration if (token_seller_vested_cum + seller_token_allocation / seller_token_vesting_duration) <= seller_token_allocation else (seller_token_allocation - token_seller_vested_cum)
     token_seller_vested_cum += token_seller_vested
 
-    return {"token_incentives_vested": token_incentives_vested, "token_seller_vested": token_seller_vested, "token_incentives_vested_cum": token_incentives_vested_cum, "token_seller_vested_cum": token_seller_vested_cum}
+    return {"token_incentives_vested": token_incentives_vested, "token_seller_vested": token_seller_vested, "token_incentives_vested_cum": token_incentives_vested_cum, "token_seller_vested_cum": token_seller_vested_cum, "emission_cap_utilization": emission_cap_utilization}
 
 def p_node_changes(params, substep, state_history, prev_state, **kwargs):
     # calculate the changes in the number of nodes for the next day
@@ -249,8 +315,8 @@ def p_foundation_economics(params, substep, state_history, prev_state, **kwargs)
     foundation_cash_reserves = prev_state['foundation_cash_reserves']
 
     # policy logic
-    foundation_expenditures = foundation_cash_burn_rate / 12
-    foundation_cash_reserves_new = foundation_cash_reserves - foundation_expenditures + foundation_revenue
+    foundation_expenditures = foundation_cash_burn_rate / 365  # Fixed: Daily burn rate, not monthly
+    foundation_cash_reserves_new = max(0, foundation_cash_reserves - foundation_expenditures + foundation_revenue)  # Fixed: Prevent negative reserves
 
     return {"foundation_revenue": foundation_revenue,"foundation_cash_reserves": foundation_cash_reserves_new, "foundation_expenditures": foundation_expenditures}
 
