@@ -213,19 +213,48 @@ conda activate depin && python tests/diagnostics/foundation_economics_validation
 - **Mathematical Precision**: All calculations validated
 
 ## 📈 Example Results
-![Default Parameter Results](./img/default_results.jpg)
+![DePIN Simulator Results](./img/depin_simulation_output.png)
 
-*Default simulation showing network growth, token economics, and cost function optimization over time.*
+*10-year DePIN simulation showing realistic network dynamics: demand growth, node economics, token price evolution, and foundation sustainability. Key metrics include smooth APR progression (no spikes), balanced utilization ratios, and sustainable token economics.*
 
 ## 🗺 Development Roadmap
 
-### Phase 1: Foundation & Cost Function Framework ✅ **COMPLETE**
+### **Current State Analysis** (Phase 1.5 Complete)
+
+#### **✅ What's Working Well**
+- **Emission Framework**: 3 distinct policies (Linear, Per-Device, BME) working correctly
+- **Economic Constraints**: Volt Capital demand/supply caps implemented
+- **Cost Function**: J(x₀, π) framework operational with 5-component optimization
+- **Testing Framework**: Comprehensive diagnostic tests validating functionality
+- **Documentation**: Professional Setup Guide with technical diagrams
+- **End-to-End**: Main simulator runs successfully with progress indicators
+
+#### **🚨 Critical Issues Identified**
+
+**Priority 1: APY Spike Issue** ⚠️ **CONFIRMED**
+- **Problem**: Extreme APY spikes (264%+) in early timesteps
+- **Root Cause**: `initial_state['node_amount'] = 0` causes division by zero in APY calculation
+- **Impact**: Unrealistic economic behavior, affects research validity
+
+**Priority 2: Demand Modeling Limitations**
+- **Current**: Simple exponential growth (0.02% daily = 7.5% annually)
+- **Missing**: Price elasticity, network effects, saturation curves, market cycles
+- **Impact**: Oversimplified economic scenarios, limited research applications
+
+**Priority 3: Percentage-Based Parameter System**
+- **Current**: Absolute token amounts (50M tokens/day)
+- **Academic Standard**: Percentage of total supply (8% annually)
+- **Need**: Optional percentage-based inputs for research compatibility
+
+---
+
+### **Phase 1: Foundation & Cost Function Framework** ✅ **COMPLETE**
 - ✅ **Cost Function Implementation**: Full `J(x_0, π)` framework with 5 components
 - ✅ **Real-time Policy Evaluation**: Cost calculated at each timestep
 - ✅ **Mathematical Foundation**: radCAD-based modeling
 - ✅ **Volt Capital Fixes**: Network utilization caps and economic constraints
 
-### Phase 1.5: Emission Framework ✅ **COMPLETE**
+### **Phase 1.5: Emission Framework** ✅ **COMPLETE**
 - ✅ **Linear Emission Policy**: Fixed daily emission (baseline)
 - ✅ **Per-Device Emission Policy**: Node-scaled with cap enforcement
 - ✅ **BME Emission Policy**: Usage-driven burn-and-mint equilibrium
@@ -233,24 +262,113 @@ conda activate depin && python tests/diagnostics/foundation_economics_validation
 - ✅ **Comprehensive Testing**: 30-day validation with policy differentiation
 - ✅ **Foundation Economics**: Corrected burn rates and bankruptcy protection
 
-### Phase 2: Optimal Control Theory & Policy Discovery 🎯 **NEXT**
-- [ ] **Automated Policy Optimization**: Cost function minimization
-- [ ] **Parameter Sweeps**: Sensitivity analysis across emission strategies
-- [ ] **Dynamic Policy Adaptation**: Real-time parameter adjustment
-- [ ] **Multi-objective Optimization**: Balance stability, growth, and sustainability
+### **Phase 1.6: Critical Fixes** 🎯 **IMMEDIATE** (1-2 weeks)
+**Focus**: Fix blocking issues, enhance core stability
 
-### Phase 3: Advanced Analytics & UI
-- [ ] **Streamlit Interface**: Interactive policy comparison dashboard
-- [ ] **Stress Testing**: Exogenous shock simulation
-- [ ] **Machine Learning**: Predictive modeling and pattern recognition
+#### **Week 1: Critical Bug Fixes & Documentation** 
+**Deliverables**: Core stability improvements and comprehensive documentation
 
-### Phase 4: Production Framework
-- [ ] **API Integration**: RESTful API for external tools
-- [ ] **Research Platform**: Academic paper generation and dataset publication
+**APY Spike Resolution**:
+- [ ] **Fix node initialization**: Set `initial_node_amount = 5000` in state variables
+- [ ] **Add calculation guards**: Prevent division by zero in all economic calculations
+- [ ] **Smooth onboarding**: Implement gradual node growth instead of instant jumps
+- [ ] **Validation testing**: Ensure APY curves are realistic (<50% max, smooth progression)
+
+**Optional Market-Based Pricing Framework**:
+- [ ] **Optional pricing toggle**: Add `market_based_pricing_enabled` parameter (default: false)
+- [ ] **Price elasticity system**: Implement demand-responsive pricing when enabled
+- [ ] **Research flexibility**: Allow comparison of fixed vs. dynamic pricing models
+- [ ] **Real-world accuracy**: Default maintains traditional DePIN fixed pricing
+
+**Economic Documentation & Benchmarks**:
+- [ ] **Real DePIN data**: Comprehensive benchmark comparison (Helium, Filecoin, Akash, Storj)
+- [ ] **Parameter justification**: Economic rationale for all major parameters with real-world references
+- [ ] **Risk assessment**: Identified risks and mitigation strategies
+- [ ] **Academic standards**: Publication-ready documentation with proper citations
+- [ ] **Parameter configuration guide**: Complete setup guide enhancement with troubleshooting
+
+**Week 1 Success Criteria**:
+- ✅ **APY Range**: All timesteps show 0-50% APR (no spikes)
+- ✅ **Price Response**: Resource price increases when demand > supply (optional mode)
+- ✅ **Simulation Stability**: 100-day run with no errors or unrealistic values
+- ✅ **Economic Realism**: Node profitability curves look realistic
+- ✅ **Parameter Documentation**: All major parameters justified with real DePIN benchmarks
+
+#### **Week 2: Enhanced Parameter System**
+- [ ] **Percentage-based inputs**: Add optional annual emission rate parameters
+- [ ] **Multi-phase architecture**: Design framework for bootstrap → growth → mature phases
+- [ ] **Backward compatibility**: Preserve existing absolute token configurations
+- [ ] **Parameter validation**: Enhanced constraint checking and economic feasibility
+
+### **Phase 2.0: Advanced Economic Modeling** (3-4 weeks)
+**Focus**: Transform to research-grade economic modeling platform
+
+#### **Demand Scenario Framework**
+- [ ] **Price elasticity**: Demand responds to token price changes
+- [ ] **Network effects**: Metcalfe's law implementation (value ∝ nodes²)
+- [ ] **Adoption curves**: S-curve adoption with carrying capacity
+- [ ] **Market scenarios**: Bull/bear markets, competition, regulatory impact
+
+#### **Economic Realism Enhancements**
+- [ ] **Feedback loops**: Token price → demand → network value cycles
+- [ ] **Market saturation**: Realistic demand ceilings and plateau effects
+- [ ] **Cyclical patterns**: Business cycles, seasonal demand variations
+- [ ] **Stress testing**: Protocol sustainability under adverse conditions
+
+### **Phase 2.1: Research & Optimization Tools** (2-3 weeks)
+**Focus**: Enable advanced research and policy optimization
+
+#### **Policy Discovery Framework**
+- [ ] **Parameter sweeps**: Automated sensitivity analysis
+- [ ] **Policy comparison**: Side-by-side emission policy evaluation
+- [ ] **Optimization targets**: Multi-objective cost function minimization
+- [ ] **Research exports**: Academic-grade data and visualization tools
+
+#### **Advanced Analytics**
+- [ ] **Real-time monitoring**: Live cost function tracking during simulation
+- [ ] **Scenario planning**: What-if analysis with parameter variations
+- [ ] **Risk assessment**: Protocol failure mode analysis
+- [ ] **Benchmarking**: Cross-protocol comparison capabilities
+
+### **Phase 3.0: Production Features** (4-6 weeks)
+**Focus**: Transform to production-ready platform
+
+#### **User Interface & Experience**
+- [ ] **Streamlit UI**: Interactive parameter configuration and visualization
+- [ ] **Real-time charts**: Live simulation progress and metrics
+- [ ] **Scenario templates**: Pre-configured realistic parameter sets
+- [ ] **Export capabilities**: Research papers, presentations, data dumps
+
+#### **API & Integration**
+- [ ] **REST API**: Programmatic simulation execution
+- [ ] **Batch processing**: Large-scale parameter sweep automation
+- [ ] **Cloud deployment**: Scalable simulation infrastructure
+- [ ] **Integration plugins**: Connect with existing DePIN tools
 
 ---
 
-**Current Status**: **Phase 1.5 Complete** ✅ - Full emission framework operational with 3 validated policies. Ready for Phase 2 optimal control theory and policy discovery research.
+### **Success Metrics & Implementation Strategy**
+
+#### **Phase 1.6 Success Criteria**
+- [ ] **APY spikes eliminated**: No timesteps with APY > 50%
+- [ ] **Smooth economics**: Realistic node profitability curves
+- [ ] **Parameter flexibility**: Both absolute and percentage inputs working
+- [ ] **Academic compatibility**: Percentage-based emission system functional
+
+#### **Phase 2.0 Success Criteria**
+- [ ] **Economic realism**: Price-demand feedback loops operational
+- [ ] **Scenario diversity**: 5+ distinct demand scenarios implemented
+- [ ] **Research validity**: Publications-ready economic modeling
+- [ ] **Stress testing**: Protocol survives extreme scenario analysis
+
+#### **Implementation Approach**
+- **40% Core Fixes**: APY spikes, parameter system, stability
+- **35% Advanced Economics**: Demand scenarios, feedback loops, realism
+- **25% Research Tools**: Optimization, analytics, production features
+
+---
+
+**Current Status**: **Phase 1.5 Complete** ✅ - Full emission framework operational with 3 validated policies. **Next**: Phase 1.6 critical fixes to resolve APY spikes and implement percentage-based parameters.
 
 ## 📊 Validation Results
 

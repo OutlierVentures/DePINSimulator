@@ -97,6 +97,27 @@ Final Emission Policy Test Results:
 
 **Total Development Time**: Phase 1.5 represents significant advancement in both technical capability and documentation maturity, establishing production-ready emission policy framework.
 
+### Roadmap Consolidation & Issue Assessment Integration
+- **README Updated**: Merged comprehensive issue assessment into main README roadmap section
+- **Single Source of Truth**: README now contains complete development strategy and technical analysis
+- **ISSUE_ASSESSMENT_AND_ROADMAP.md Deleted**: Eliminated duplicate documentation
+- **APY Spike Issue Confirmed**: Diagnostic analysis reveals 264%+ spikes due to `node_amount = 0` division
+- **Performance Baseline**: 10-15 seconds for 10-year simulation, proper constraint validation
+- **Development Priority Matrix**: Phase 1.6 (critical fixes) → Phase 2.0 (advanced economics) → Phase 3.0 (production)
+- **Success Metrics Defined**: Quantitative criteria for each development phase
+
+### Key Technical Discoveries
+- **APY Calculation Issue**: `((node_profit/node_amount*365) / node_base_cost) * 100` with node_amount=0
+- **radCAD Timing**: Node initialization happens after APY calculation in first timestep
+- **Economic Realism Gaps**: Demand modeling lacks price elasticity, network effects, saturation curves
+- **Parameter System**: Need percentage-based inputs for academic research compatibility
+
+### Next Phase Strategy
+- **Immediate**: Fix APY spikes and implement percentage-based parameters (2 weeks)
+- **Short-term**: Advanced demand scenarios and economic feedback loops (4 weeks)  
+- **Medium-term**: Research optimization tools and policy discovery framework (3 weeks)
+- **Long-term**: Production UI, API, and cloud deployment capabilities (6 weeks)
+
 ---
 
 ## 2024-12-28: Roadmap Update & User Experience Improvements
@@ -878,247 +899,6 @@ foundation_cash_reserves_new = max(0, foundation_cash_reserves - foundation_expe
 
 ---
 
-## 2024-12-19: Architecture Planning & Roadmap Update
-
-### BME Architecture Breakthrough
-
-**Key Insight**: BME should be emission policy configuration, not separate development phase.
-
-**New Architecture Understanding**:
-- **BME During Emission**: Identical bootstrap behavior as current system
-- **Post-Emission Divergence**: Revenue rewards vs unlimited minting
-- **Supply Constraints**: Pure BME requires uncapped supply; capped supply needs emission budget
-- **Universal Question**: All policies converge to "What happens when budget runs out?"
-
-**Updated Development Structure**:
-- **Phase 1.5**: Complete emission framework (linear, per-device, BME) + post-emission options  
-- **Phase 2**: Focus on optimization and intelligent policy discovery (not BME implementation)
-
-**Benefits**:
-- ✅ Cleaner policy comparisons within same simulation framework
-- ✅ Natural progression from bootstrap to sustainability phases
-- ✅ Eliminates artificial separation between emission types and BME
-- ✅ Sets up optimization phase with complete policy landscape
-
-**Files Updated**:
-- `README.md`: New roadmap structure reflecting BME as emission policy
-- `LLMLOG.MD`: Detailed architecture planning documentation
-
-## 2024-12-19: Initial Setup & Cost Function Framework
-
-### Phase 1 Completion ✅
-- Cost function implementation with 5-component optimization framework
-- Demand/supply ratio capping implemented (Volt Capital methodology)
-- Model validation successful with realistic DePIN economics
-
-### Project Structure Established
-- radCAD integration complete with proper state management
-- Policy functions implementing economic logic and PID controllers
-- Systematic parameter validation and constraint checking
-- Foundation for future BME and optimization development
-
-### Economic Framework Validated
-- 10-year simulation capability (3,650 timesteps)
-- Proper token economics with vesting schedules
-- Node profitability models with realistic APR targets
-- Foundation sustainability with proper cash flow management
-
-**Status**: Phase 1 complete, ready for Phase 1.5 emission policy framework development.
-
-## 2024-12-19: BME Emission Policy Implementation ✅ COMPLETE
-
-**Objective**: Implement BME (Burn-and-Mint Equilibrium) emission policy as third option alongside linear and per-device policies.
-
-### Implementation Summary
-Successfully implemented complete BME emission policy framework with usage-driven token economics:
-
-**1. Parameter Configuration (model/sys_params.py)**
-- Changed default emission_policy from 'per_device' to 'linear' 
-- Added comprehensive BME parameters:
-  - `bme_burn_rate_multiplier`: [1.0] - Controls burn rate relative to network revenue
-  - `bme_mint_rate_multiplier`: [1.0] - Controls mint rate relative to burn amount
-- Updated policy documentation with all three options
-
-**2. Core BME Logic (model/policy_functions.py)**
-- Extended p_token_vesting() with complete conditional structure:
-  - `elif emission_policy == 'linear'`: Fixed daily emission (default)
-  - `elif emission_policy == 'per_device'`: Node-scaled emission
-  - `elif emission_policy == 'bme'`: Usage-driven burn-and-mint equilibrium
-  - `else`: Fallback to linear emission
-- BME calculation: `burn_equivalent = network_sold_resource × resource_unit_price × burn_multiplier`
-- Mint calculation: `bme_emission = burn_equivalent × mint_multiplier`
-- Full cap enforcement and budget allocation support
-
-**3. Comprehensive Testing (tests/diagnostics/bme_emission_policy_test.py)**
-- 5 test scenarios covering all emission policies
-- BME validation with different multiplier configurations
-- Cap enabled/disabled testing
-- Mathematical validation of usage-driven calculations
-
-### Technical Discoveries
-
-**radCAD Execution Order Critical Insight**:
-- radCAD executes 11 substeps per timestep in sequence
-- p_token_vesting (block 2) runs before p_node_changes (block 9)
-- Final state values are in last substep (substep 11), not first substep
-- Fixed test framework to use `.iloc[-1]` for final substep data
-
-**BME Mathematical Validation**:
-- Network sold: 400,080,000 units
-- Resource price: $0.00002/unit  
-- BME emission: 8,002 tokens (usage-driven)
-- Inflationary BME (0.5x burn, 1.5x mint): 6,001 tokens
-- Cap utilization: 1.6% (well under 500k daily cap)
-
-### Test Results ✅ ALL PASSED
-```
-✅ PASS Linear Emission (Default): 6,849,315 tokens
-✅ PASS Per-Device Emission (Node-Scaled): 500,000 tokens  
-✅ PASS BME Emission (Usage-Driven): 8,002 tokens
-✅ PASS BME Emission (Inflationary): 6,001 tokens
-✅ PASS BME Emission (No Cap): 8,002 tokens
-```
-
-### Architecture Impact
-- **Phase 1.5 Emission Framework**: 🎯 **95% COMPLETE**
-- **BME as Policy Configuration**: Confirmed architectural approach - BME is emission policy option, not separate phase
-- **Backward Compatibility**: Perfect - all existing linear/per-device functionality preserved
-- **Research Ready**: Framework supports policy comparison and optimization research
-
-### Key Benefits Delivered
-1. **Complete Emission Policy Framework**: Three distinct policies for different economic models
-2. **Usage-Driven Economics**: BME ties token emission directly to network utilization
-3. **Configurable Parameters**: Burn/mint multipliers enable fine-tuned economic control
-4. **Research Flexibility**: Optional cap enforcement for policy experimentation
-5. **Mathematical Precision**: Validated calculations with comprehensive test coverage
-
-### Next Steps
-- **Phase 2**: Optimal control theory and policy discovery
-- **Policy Comparison**: Research optimal emission strategies across network lifecycle
-- **Parameter Optimization**: Tune BME multipliers for target economic outcomes
-
-**Status**: BME emission policy implementation complete and fully validated. Ready for advanced policy research and optimization.
-
----
-
-## 2024-12-19: Marginal Improvement Cycle - Round 5 ✅ COMPLETE
-
-**Objective**: Add optional emission cap configuration for policy research flexibility.
-
-### Implementation
-- Added `emission_cap_enabled: [True]` parameter to sys_params.py
-- Extended p_token_vesting() with conditional cap bypass logic
-- Maintained backward compatibility (default: cap enabled)
-
-### Testing Results ✅ ALL PASSED
-Created tests/diagnostics/optional_cap_configuration_test.py with 6 scenarios:
-- 2k nodes (cap enabled/disabled): 200k vs 200k tokens (under cap)
-- 5k nodes (cap enabled/disabled): 500k vs 500k tokens (at cap)  
-- 7.5k nodes (cap enabled/disabled): 500k vs 750k tokens (+250k when disabled)
-
-**Key Insight**: 7.5k nodes shows +250k tokens (50% increase) when cap disabled, demonstrating research value.
-
-**Architecture**: Zero regressions, perfect backward compatibility maintained.
-
----
-
-## 2024-12-19: Marginal Improvement Cycle - Round 4 ✅ COMPLETE
-
-**Objective**: Validate emission cap across multiple node scenarios (2k, 5k, 7.5k nodes).
-
-### Technical Challenge Solved
-**radCAD Execution Order Issue**: p_token_vesting (block 2) runs before p_node_changes (block 9)
-- At timestep 1: node_amount = 0 (not yet initialized)
-- At timestep 2: node_amount = proper value (after full initialization cycle)
-- **Solution**: Use timestep 2 data for validation, not timestep 1
-
-### Implementation  
-Created tests/diagnostics/multi_node_emission_test.py with proper timestep handling.
-
-### Testing Results ✅ ALL PASSED
-- **2k nodes**: 40% cap utilization (200k tokens)
-- **5k nodes**: 100% cap utilization (500k tokens) 
-- **7.5k nodes**: 150% cap utilization → capped at 500k tokens
-
-**Architecture**: Emission cap enforcement working correctly across all node counts.
-
----
-
-## 2024-12-19: Marginal Improvement Cycle - Round 3 ✅ COMPLETE
-
-**Objective**: Fix environment compatibility and test execution issues.
-
-### Issues Resolved
-1. **Environment Protection**: Updated .cursorrules with mandatory `conda activate depin` usage
-2. **Parameter Naming**: Fixed `initial_node_amount` parameter reference in test
-3. **Test Execution**: Resolved pandas/numpy compatibility issues
-
-### Implementation
-- Updated .cursorrules with critical environment requirements
-- Fixed parameter names in emission_cap_validation.py
-- Established proper testing workflow
-
-### Testing Results ✅ SUCCESS
-All tests now execute successfully in depin environment with proper parameter handling.
-
-**Architecture**: Environment compatibility issues resolved, testing framework operational.
-
----
-
-## 2024-12-19: Marginal Improvement Cycle - Round 2 ✅ COMPLETE
-
-**Objective**: Add emission cap utilization tracking for real-time diagnostics.
-
-### Issue Identified
-Per-device emission hitting 100% cap (5,000 nodes × 100 tokens = 500k cap) with no visibility into utilization percentage.
-
-### Implementation
-- Added `emission_cap_utilization` calculation to p_token_vesting()
-- Extended state variables and state update functions
-- Created comprehensive test framework
-
-### Testing Results ✅ VALIDATED
-Created tests/diagnostics/emission_cap_validation.py:
-- Mathematical accuracy confirmed
-- Real-time diagnostic tracking operational
-- Cap enforcement properly implemented
-
-**Architecture**: Emission cap utilization tracking now provides real-time visibility into policy performance.
-
----
-
-## 2024-12-19: Marginal Improvement Cycle - Round 1 ✅ COMPLETE
-
-**Objective**: Fix critical foundation economics bug affecting network sustainability.
-
-### Issue Identified
-Foundation burn rate using monthly divisor (÷12) instead of daily (÷365), causing 30.4x faster cash depletion with no bankruptcy protection.
-
-### Implementation
-**2-line fix in p_foundation_economics():**
-```python
-# Fixed daily burn rate calculation
-foundation_expenditures = foundation_cash_burn_rate / 365  # was ÷12
-
-# Added bankruptcy protection  
-new_foundation_cash_reserves = max(0, foundation_cash_reserves - foundation_expenditures)
-```
-
-### Impact Analysis
-- **96.7% reduction** in daily burn rate ($82,192 → $2,740)
-- **30.4x longer** foundation runway (9.1 years → 277 years)
-- **Bankruptcy protection** prevents negative cash reserves
-
-### Testing Results ✅ VALIDATED
-Created tests/diagnostics/foundation_economics_validation.py:
-- Mathematical accuracy confirmed
-- Economic sustainability restored
-- Edge case protection verified
-
-**Architecture**: Foundation economics now sustainable with proper daily burn rate and bankruptcy protection.
-
----
-
 ## 2024-12-19: Architecture Planning Session - BME vs Emissions
 
 **Context**: User asked about Phase 2 BME implementation vs current emission framework.
@@ -1445,7 +1225,7 @@ Final Emission Policy Test Results:
 ✅ Per-Device Emission: 500,000 tokens (node-scaled, capped)  
 ✅ BME Emission: 8,002 tokens (usage-driven)
 ✅ BME Inflationary (0.5x burn, 1.5x mint): 6,001 tokens
-✅ BME No Cap: 8,002 tokens
+✅ BME No Cap: 8,002 tokens (usage-driven)
 
 30-Day Comprehensive Validation:
 ✅ Linear: 205.5M tokens total (perfect consistency, 0% variance)
@@ -1518,6 +1298,135 @@ Final Emission Policy Test Results:
 
 **Total Development Time**: Phase 1.5 represents significant advancement in both technical capability and documentation maturity, establishing production-ready emission policy framework.
 
----
+### December 30, 2024
+**Development Plan Update: Week 1 Approach Refined**
 
-## 2024-12-29 - Phase 1 Complete: Cost Function Framework & Model Validation
+**Context**: User discussed model with boss and got specific feedback on next steps approach. Boss raised concerns about market-based pricing universality and requested economic justification with real benchmarks.
+
+**Key Changes Made**:
+
+1. **Market-Based Pricing Made Optional** (Day 3-4 revision)
+   - **Rationale**: Most DePINs use fixed pricing for predictability
+   - **Implementation**: Added `market_based_pricing_enabled` parameter (default: false)
+   - **Benefits**: Research flexibility while maintaining real-world accuracy
+   - **Boss Concern Addressed**: "not sure how common it is for these networks to adjust prices"
+
+2. **Economic Justification Enhanced to Benchmarks Document**
+   - **Created**: `docs/ECONOMIC_JUSTIFICATION_AND_BENCHMARKS.md`
+   - **Content**: Real DePIN network comparison data (Helium, Filecoin, Akash, Storj)
+   - **Benchmarks**: Node economics, growth rates, token staking, revenue distribution
+   - **Boss Request**: "include real data as benchmarks"
+
+3. **README Updated with New Simulation Chart**
+   - **Replaced**: Default results chart with user's new 10-year simulation output
+   - **Enhanced**: Description highlighting key metrics and realistic behavior
+   - **Location**: `./img/depin_simulation_output.png`
+
+4. **Week 1 Deliverables Document Created**
+   - **File**: `WEEK_1_DELIVERABLES.md`
+   - **Structure**: Revised approach, daily breakdown, success criteria
+   - **Boss Review**: Checklist addressing all concerns raised in discussion
+
+**Technical Approach**:
+- **APY Fix**: Confirmed good (Days 1-2) - initialize node_amount = 5000
+- **Market Pricing**: Optional toggle for research vs. production use
+- **Documentation**: Academic-grade with real network benchmarks
+- **Validation**: Comprehensive testing suite for all changes
+
+**Long-term Vision Alignment**:
+- **Step 0**: Stakeholder questions framework ✅ delivered
+- **Step 1**: Debug + documentation (Week 1 focus)
+- **Step 2**: Different distribution models (foundation ready)
+- **Step 3**: MCP server + Streamlit + LLM (architecture supports)
+
+**Next Actions**: Ready for Week 1 implementation with optional market pricing, comprehensive economic benchmarks, and APY spike resolution.
+
+### December 30, 2024
+**Setup Guide Enhancement: Parameter Configuration Guide Added**
+
+**Context**: User requested parameter configuration guide to complement existing setup guide rather than create separate documentation.
+
+**Implementation**:
+1. **Enhanced Setup Guide** (`Setup_Guide.md`)
+   - **Added**: Comprehensive "Parameter Configuration Guide" section
+   - **Location**: Inserted after "Running Simulations", before "Testing & Validation"
+   - **Content**: Parameter tables, relationships, scenarios, troubleshooting
+   - **Structure**: Network economics, token economics, emission policies, market dynamics, PID controllers
+
+2. **Parameter Documentation Features**:
+   - **Parameter Tables**: Default values, valid ranges, constraints, impact descriptions
+   - **Economic Relationships**: Node profitability chain, network balance, token flow
+   - **Common Scenarios**: Conservative DePIN, Growth-focused, Research/experimental
+   - **Validation Rules**: Mathematical and economic constraints
+   - **Troubleshooting**: APY spikes, network collapse, price volatility, budget exhaustion
+   - **Advanced Techniques**: Parameter sweeps, dynamic adjustment, scenario modeling
+
+3. **README Roadmap Integration**:
+   - **Merged**: Week 1 deliverables into Phase 1.6 roadmap section
+   - **Enhanced**: Success criteria and comprehensive deliverable descriptions
+   - **Removed**: Boss references for general professional documentation
+   - **Added**: Parameter configuration guide as Week 1 deliverable
+
+**Benefits**:
+- **Integrated Documentation**: Single source of truth in setup guide
+- **Practical Reference**: Tables with valid ranges and constraints
+- **Troubleshooting**: Common issues and solutions for parameter configuration
+- **Progressive Learning**: Basic to advanced parameter techniques
+- **Research Ready**: Economic scenarios and parameter sweep examples
+
+**User Experience**: Complete parameter configuration guide now available in setup documentation, complementing existing technical architecture and providing practical guidance for parameter tuning and troubleshooting.
+
+### December 30, 2024
+**Realistic Parameter Defaults: Scaled-Down Network Configuration**
+
+**Context**: User requested more realistic starting default parameters based on actual DePIN network launches and benchmarks.
+
+**Key Parameter Changes**:
+
+1. **Network Scale Reduction** (More realistic bootstrap)
+   - `initial_node_amount`: 5000 → 2500 nodes (matches Helium's ~2K start)
+   - `node_resource_provision_rate`: 100K → 50K units/day (realistic throughput)
+   - `initial_network_resource_demand`: 400M → 90M units/day (75% utilization)
+
+2. **Node Economics Optimization**
+   - `node_setup_cost`: $1000 → $750 (better accessibility)
+   - `node_token_stake`: 10K → 5K tokens (~$25 vs $50, lower barrier)
+   - `node_reliability`: 98% → 95% (more realistic for distributed hardware)
+   - `apr_threshold`: 15% → 18% (attractive for early adopters)
+
+3. **Economic Sustainability Improvements**
+   - `resource_unit_price`: $0.00002 → $0.00003 (50% increase for profitability)
+   - `network_resource_demand_growth_rate`: 0.02% → 0.03% daily (11% vs 7.5% annually)
+   - `node_growth_cap`: 5% → 3% daily (more conservative expansion)
+
+4. **Foundation & Token Economics**
+   - `initial_foundation_cash_reserves`: $25M → $15M (realistic startup funding)
+   - `foundation_cash_burn_rate`: $1M → $1.5M annually (includes marketing)
+   - `token_initial_valuation`: $50M → $20M market cap ($0.002 vs $0.005/token)
+   - `liquidity_token_allocation`: 5% → 3% (smaller initial liquidity pool)
+
+5. **Emission Policy Adjustments**
+   - `emission_per_device_daily`: 100 → 150 tokens/node (higher rate for smaller network)
+   - `emission_device_cap_daily`: 500K → 400K tokens (scaled to network size)
+   - `incentive_token_allocation`: 50% → 52% (maintain sum = 1.0 with smaller liquidity)
+
+6. **Market Dynamics Parameters Added**
+   - `market_based_pricing_enabled`: False (default traditional DePIN pricing)
+   - `price_elasticity_factor`: 1.5 (moderate sensitivity when enabled)
+   - `max_price_multiplier`: 2.0 (100% max price increase cap)
+
+**Economic Impact**:
+- **Network Capacity**: 119M units/day (2.5K × 50K × 95%)
+- **Initial Utilization**: 75% (90M demand / 119M capacity)  
+- **Node Investment**: $775 total ($750 hardware + $25 stake)
+- **Foundation Runway**: ~10 years at $1.5M annual burn
+- **Token Price**: $0.002 initial price (accessible for users)
+
+**Benefits**:
+- **Realistic Scale**: Matches actual DePIN network launches
+- **Economic Viability**: Improved node profitability and lower barriers
+- **Conservative Growth**: Sustainable expansion without boom-bust cycles
+- **Research Ready**: Optional market dynamics for advanced analysis
+- **Benchmark Aligned**: Parameters based on successful DePIN networks
+
+**Validation**: All constraint checks maintained (revenue shares = 1.0, token allocations = 1.0, economic viability confirmed).

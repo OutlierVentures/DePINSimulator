@@ -359,6 +359,249 @@ Simulation outputs include:
 
 ---
 
+## Parameter Configuration Guide
+
+### Parameter Categories
+
+#### Network Economics Parameters
+Configuration for network scale and growth dynamics.
+
+| Parameter | Description | Default Value | Valid Range | Impact |
+|-----------|-------------|---------------|-------------|---------|
+| `initial_node_amount` | Starting network size | 5000 | 100-50000 | Network capacity & economics |
+| `node_resource_provision_rate` | Units per node per day | 100000 | 10000-1000000 | Supply capacity |
+| `resource_unit_price` | Revenue per unit ($) | 0.00002 | 0.000001-0.001 | Node profitability |
+| `network_resource_demand_growth_rate` | Daily growth % | 0.02 | -0.1 to 0.1 | Network adoption speed |
+| `node_reliability` | Uptime percentage | 0.98 | 0.80-0.99 | Effective capacity |
+
+#### Token Economics Parameters  
+Configuration for token distribution and vesting schedules.
+
+| Parameter | Description | Default Value | Constraints | Usage |
+|-----------|-------------|---------------|-------------|-------|
+| `incentive_token_allocation` | Bootstrap budget % | 0.5 | 0.3-0.7 | Node incentive pool |
+| `seller_token_allocation` | Stakeholder allocation % | 0.35 | 0.2-0.5 | Investor/team tokens |
+| `idle_token_allocation` | Reserve allocation % | 0.1 | 0.05-0.2 | Treasury buffer |
+| `liquidity_token_allocation` | DEX liquidity % | 0.05 | 0.02-0.1 | Price discovery |
+
+**Critical Constraint**: All token allocations must sum to 1.0
+
+#### Emission Policy Parameters
+Configuration specific to each emission strategy.
+
+**Linear Emission**:
+```python
+'emission_policy': ['linear']
+'incentive_mode': ['fixed_rate']  # or 'fixed_weighted_rate'
+```
+
+**Per-Device Emission**:
+```python
+'emission_policy': ['per_device']
+'emission_per_device_daily': [100]      # Tokens per node per day
+'emission_device_cap_daily': [500_000]  # Maximum daily emission
+'emission_cap_enabled': [True]          # Enforce daily cap
+```
+
+**BME Emission**:
+```python
+'emission_policy': ['bme']
+'bme_burn_rate_multiplier': [1.0]       # Revenue-to-burn ratio
+'bme_mint_rate_multiplier': [1.0]       # Burn-to-mint ratio  
+```
+
+#### Market Dynamics Parameters (Optional)
+Advanced parameters for market-responsive behavior.
+
+| Parameter | Description | Default | When to Use |
+|-----------|-------------|---------|-------------|
+| `market_based_pricing_enabled` | Enable dynamic pricing | False | Research scenarios |
+| `price_elasticity_factor` | Price response sensitivity | 1.5 | Market modeling |
+| `max_price_multiplier` | Price increase cap | 2.0 | Prevent extreme spikes |
+
+**Default Behavior**: Traditional DePIN fixed pricing
+**Research Mode**: Enable market dynamics for advanced analysis
+
+#### PID Controller Parameters
+Fine-tuning for network stability and response characteristics.
+
+| Parameter | Description | Default | Tuning Guide |
+|-----------|-------------|---------|--------------|
+| `apr_controller_kp` | Proportional gain | 0.5 | Higher = faster response, more oscillation |
+| `apr_controller_ki` | Integral gain | 0.02 | Higher = eliminates steady-state error, risk windup |
+| `apr_controller_kd` | Derivative gain | 0.001 | Higher = predicts trends, amplifies noise |
+
+**Stability Target**: <2% daily node volatility
+
+### Parameter Relationships
+
+Critical economic relationships to understand when configuring parameters:
+
+#### Node Profitability Chain
+```
+provision_rate × reliability × price × utilization × revenue_share = node_revenue
+node_revenue - operational_costs = profit  
+profit / (setup_cost + stake_value) = ROI
+```
+
+#### Network Economics Balance
+```
+demand_growth_rate vs (node_growth × provision_rate) = utilization_pressure
+utilization_pressure × price_elasticity = price_response (if enabled)
+```
+
+#### Token Economics Flow
+```
+total_allocation = incentive + seller + idle + liquidity = 1.0
+daily_emission ≤ incentive_allocation / vesting_duration
+token_supply = initial_supply + minted - burned
+```
+
+### Common Parameter Scenarios
+
+#### Conservative DePIN (Recommended)
+```python
+'network_resource_demand_growth_rate': [0.02],    # 7.5% annually
+'apr_threshold': [15],                             # Sustainable target
+'initial_node_amount': [5000],                     # Manageable scale
+'emission_policy': ['linear']                      # Predictable emissions
+```
+**Use Case**: Production launch, institutional investors
+
+#### Growth-Focused DePIN
+```python
+'network_resource_demand_growth_rate': [0.05],    # 18% annually
+'apr_threshold': [25],                             # Aggressive target
+'emission_policy': ['per_device']                  # Growth incentives
+'emission_per_device_daily': [150]                 # Higher node rewards
+```
+**Use Case**: Network bootstrapping, user acquisition
+
+#### Research/Experimental
+```python
+'market_based_pricing_enabled': [True],           # Dynamic pricing
+'emission_policy': ['bme'],                       # Usage-driven
+'bme_burn_rate_multiplier': [1.2],                # Aggressive burn
+'network_resource_demand_growth_rate': [0.1]      # Stress test
+```
+**Use Case**: Academic research, stress testing
+
+### Parameter Validation Rules
+
+#### Mathematical Constraints
+- Revenue shares must sum to 1.0: `node_share + foundation_share + burn_share = 1.0`
+- Token allocations must sum to 1.0: `incentive + seller + idle + liquidity = 1.0`
+- All percentages must be 0-100%: `0 ≤ parameter ≤ 1.0`
+- Growth rates must be > -100%: `growth_rate > -1.0`
+
+#### Economic Constraints  
+- Node ROI should be 10-50% annually for sustainability
+- Payback period should be 6-36 months for attractiveness
+- Network utilization should be 60-90% for efficiency
+- Foundation runway should be >5 years for stability
+
+### Parameter Troubleshooting
+
+#### APY Spikes (>50%)
+**Symptoms**: Unrealistic APR values in early timesteps
+**Cause**: Division by zero when `node_amount = 0`
+**Fix**: Ensure `initial_node_amount > 0` in `state_variables.py`
+
+#### Network Collapse (Node exodus)
+**Symptoms**: Rapid node count decline
+**Cause**: Unprofitable economics or unstable PID tuning
+**Fix**: 
+- Check `apr_threshold` vs actual profitability
+- Reduce PID gains for stability
+- Increase `resource_unit_price` for better economics
+
+#### Token Price Volatility
+**Symptoms**: Extreme price swings
+**Cause**: Excessive emissions or demand-supply imbalance  
+**Fix**:
+- Reduce emission rates
+- Enable emission caps
+- Adjust demand growth parameters
+
+#### Budget Exhaustion
+**Symptoms**: Zero emissions before vesting period ends
+**Cause**: Daily emission exceeds budget allocation
+**Fix**:
+- Reduce per-device emission rates
+- Enable and lower emission caps
+- Extend vesting duration
+
+### Parameter Testing Workflow
+
+Before deploying new parameter sets:
+
+1. **Constraint Validation**
+```bash
+conda activate depin && python -c "from model.sys_params import validate_params; validate_params()"
+```
+
+2. **Short Simulation Test**
+```python
+# Test with 30-day simulation first
+timesteps = 30
+results = run_simulation(params)
+```
+
+3. **Economic Validation**
+- Check node payback period (6-36 months)  
+- Verify utilization ratio (60-90%)
+- Confirm token price stability
+- Validate foundation runway
+
+4. **Stress Testing**
+```python
+# Test extreme scenarios
+stress_params = params.copy()
+stress_params['network_resource_demand_growth_rate'] = [0.1]  # 10x normal
+stress_params['apr_threshold'] = [5]  # Low profitability
+```
+
+### Advanced Parameter Techniques
+
+#### Parameter Sweeps
+```python
+# Multi-dimensional analysis
+growth_rates = [0.01, 0.02, 0.05]
+apr_targets = [10, 15, 20]
+
+for growth in growth_rates:
+    for apr in apr_targets:
+        params['network_resource_demand_growth_rate'] = [growth]
+        params['apr_threshold'] = [apr]
+        results = run_simulation(params)
+        analyze_results(results, growth, apr)
+```
+
+#### Dynamic Parameter Adjustment
+```python
+# Conditional parameter logic for research
+if network_maturity > 0.8:
+    params['emission_policy'] = ['bme']  # Switch to usage-driven
+else:
+    params['emission_policy'] = ['per_device']  # Growth focus
+```
+
+#### Economic Scenario Modeling
+```python
+# Bull/bear market scenarios
+bull_market = {
+    'network_resource_demand_growth_rate': [0.08],  # High growth
+    'resource_unit_price': [0.00004],               # Premium pricing
+}
+
+bear_market = {
+    'network_resource_demand_growth_rate': [-0.02], # Declining demand  
+    'resource_unit_price': [0.00001],               # Competitive pricing
+}
+```
+
+---
+
 ## Testing & Validation
 
 ### Test Categories
