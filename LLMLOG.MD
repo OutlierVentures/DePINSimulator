@@ -1430,3 +1430,45 @@ Final Emission Policy Test Results:
 - **Benchmark Aligned**: Parameters based on successful DePIN networks
 
 **Validation**: All constraint checks maintained (revenue shares = 1.0, token allocations = 1.0, economic viability confirmed).
+
+## 2025-01-25: EvoDePIN PRD - Evolutionary Algorithm Integration Planning
+
+### Changes:
+- Created comprehensive Product Requirements Document: `docs/PRD_EvoDePIN_Evolutionary_Algorithm_Integration.md`
+- Defined technical architecture for evolutionary algorithm module integration
+- Specified 21-parameter TokenGenome class mapping to existing sys_params.py structure
+- Designed simulation wrapper for seamless radCAD integration with genome evaluation
+- Planned multi-objective optimization using DEAP/NSGA-II framework
+
+### Technical Specifications:
+- **Core Architecture**: evodepin/ module with TokenGenome, DePINSimulationWrapper, EvolutionEngine
+- **Parameter Space**: 21 genes covering node economics, network dynamics, revenue distribution, token mechanics, controller tuning
+- **Fitness Function**: Integration with existing cost_functions.py 5-component framework
+- **Optimization Algorithms**: NSGA-II multi-objective, differential evolution, particle swarm
+- **Parallel Execution**: joblib-based parallel simulation for 4x throughput improvement
+
+### Implementation Phases:
+- **Phase 2.1** (Week 1-2): Core infrastructure - TokenGenome, simulation wrapper, basic EA
+- **Phase 2.2** (Week 3-4): Advanced algorithms - NSGA-II, parallel execution, convergence detection  
+- **Phase 2.3** (Week 5-6): Analysis & visualization - plotting, reporting, KPI extraction
+- **Phase 2.4** (Week 7-8): Experiments & validation - baseline comparison, sensitivity analysis
+
+### Success Criteria:
+- 20%+ fitness improvement vs. baseline configurations
+- Full integration with existing radCAD simulation framework
+- Multi-objective Pareto front analysis for protocol trade-offs
+- Reproducible experiment pipeline with professional visualization
+
+### Integration Points:
+- Direct parameter injection via sys_params dictionary structure
+- Fitness evaluation using calculate_step_cost() and calculate_cumulative_cost()
+- Result processing through existing run.postprocessing() pipeline
+- Extension of current diagnostic testing framework
+
+### Next Steps:
+- Begin Phase 2.1 implementation with TokenGenome class
+- Set up DEAP framework and basic evolution engine
+- Create configuration system (YAML files) for EA hyperparameters
+- Implement unit tests for genome validation and constraint checking
+
+**Impact**: Provides automated discovery of optimal token economic configurations, reducing manual parameter tuning effort while discovering configurations that may outperform human-designed baselines by 20%+ in cost function optimization.
