@@ -1,0 +1,52 @@
+
+DePIN Simulator - Simulation Summary Report
+==========================================
+Generated: 2025-08-14 11:03:34
+Simulation Duration: 30 timesteps (0.1 years)
+Monte Carlo Runs: 1
+Emission Policy: linear
+
+Key Final Metrics (at simulation end):
+=====================================
+Network Metrics:
+- Node Count: 19,306 nodes
+- Network Utilization: 21.8%
+- Network Demand: 402,326,508 resource units
+
+Token Economics:
+- Token Price: $0.002881
+- Total Token Supply: 9,999,303,508 tokens
+- Circulating Supply: 1,849,303,508 tokens
+- Tokens Staked: 193,060,000 tokens (1.9%)
+
+Node Economics:
+- Node APR: 45.6%
+- Node Profit: $24,174.20 per day
+- Network Revenue: $6,034.90 per day
+- Incentive Revenue: $19,983.66 per day
+
+Foundation:
+- Cash Reserves: $24,975,576
+- Daily Cash Flow: $-808.56
+
+APR Analysis:
+=============
+- Max APR: 273.4%
+- Min APR: 45.6%
+- Average APR: 125.0%
+- APR Volatility (std): 69.7%
+- Timesteps with APR > 100%: 16
+
+Critical Validation:
+===================
+- Max timesteps with zero nodes: 0
+- Network utilization >100%: 0 timesteps
+- Negative token price: 0 timesteps
+- Foundation bankruptcy risk: No
+
+Files Generated:
+===============
+- data/simulation_results.csv: Complete simulation data
+- data/simulation_results_raw.csv: Raw radCAD output
+- charts/simulation_charts.png: All visualization charts
+- reports/summary_report.txt: This summary report

@@ -1,0 +1,129 @@
+{
+  "_metadata": {
+    "name": "Sustainable Per-Device",
+    "description": "Emissions scale with network size, balanced approach with per-device rewards",
+    "best_for": "Networks wanting emission scaling with growth while maintaining sustainability",
+    "version": "1.0",
+    "based_on": "base_template"
+  },
+  "initial_node_amount": [
+    8000
+  ],
+  "node_setup_cost": [
+    1000.0
+  ],
+  "node_resource_provision_cost": [
+    1e-06
+  ],
+  "node_resource_provision_rate": [
+    100000
+  ],
+  "node_reliability": [
+    0.98
+  ],
+  "node_token_stake": [
+    10000
+  ],
+  "node_growth_cap": [
+    5.0
+  ],
+  "apr_threshold": [
+    20.0
+  ],
+  "initial_network_resource_demand": [
+    600000000
+  ],
+  "resource_unit_price": [
+    2e-05
+  ],
+  "network_resource_demand_growth_rate": [
+    0.02
+  ],
+  "node_revenue_share": [
+    0.75
+  ],
+  "buyback_and_burn_revenue_share": [
+    0.01
+  ],
+  "foundation_revenue_share": [
+    0.24
+  ],
+  "foundation_cash_burn_rate": [
+    1000000
+  ],
+  "incentive_token_allocation": [
+    0.4
+  ],
+  "seller_token_allocation": [
+    0.35
+  ],
+  "idle_token_allocation": [
+    0.2
+  ],
+  "seller_token_vesting_duration": [
+    1095
+  ],
+  "incentive_mode": [
+    "fixed_rate"
+  ],
+  "incentive_token_vesting_duration": [
+    1095
+  ],
+  "incentive_early_weight_ratio": [
+    0.8
+  ],
+  "token_mint_model": [
+    "none"
+  ],
+  "emission_policy": [
+    "per_device"
+  ],
+  "emission_per_device_daily": [
+    75
+  ],
+  "emission_device_cap_daily": [
+    400000
+  ],
+  "emission_cap_enabled": [
+    true
+  ],
+  "bme_burn_rate_multiplier": [
+    1.0
+  ],
+  "bme_mint_rate_multiplier": [
+    1.0
+  ],
+  "apr_controller_kp": [
+    0.5
+  ],
+  "apr_controller_ki": [
+    0.02
+  ],
+  "apr_controller_kd": [
+    0.001
+  ],
+  "token_market_scenario": [
+    "stable"
+  ],
+  "token_speculation_factor": [
+    1.0
+  ],
+  "utilization_controller_enabled": [
+    false
+  ],
+  "resource_price_adjustment_enabled": [
+    false
+  ],
+  "initial_foundation_cash_reserves": [
+    25000000
+  ],
+  "token_initial_total_supply": [
+    10000000000
+  ],
+  "token_initial_valuation": [
+    50000000
+  ],
+  "business_growth_scenario": [
+    "linear"
+  ]
+}

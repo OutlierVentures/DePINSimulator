@@ -155,3 +155,43 @@ def s_node_apr_error_cum(params, substep, state_history, prev_state, policy_inpu
     # update the node apr error cumulative
     updated_node_apr_error_cum = policy_input['node_apr_error_cum']
     return ('node_apr_error_cum', updated_node_apr_error_cum)
+
+def s_utilization_error_cum(params, substep, state_history, prev_state, policy_input, **kwargs):
+    # update the utilization error cumulative
+    updated_utilization_error_cum = policy_input['utilization_error_cum']
+    return ('utilization_error_cum', updated_utilization_error_cum)
+
+def s_resource_unit_price_current(params, substep, state_history, prev_state, policy_input, **kwargs):
+    # update the current resource unit price
+    updated_resource_unit_price_current = policy_input['resource_unit_price_current']
+    return ('resource_unit_price_current', updated_resource_unit_price_current)
+
+def s_resource_price_multiplier(params, substep, state_history, prev_state, policy_input, **kwargs):
+    # update the resource price multiplier
+    updated_resource_price_multiplier = policy_input['resource_price_multiplier']
+    return ('resource_price_multiplier', updated_resource_price_multiplier)
+
+def s_fundamental_token_price(params, substep, state_history, prev_state, policy_input, **kwargs):
+    # update the fundamental token price (without speculation)
+    updated_fundamental_token_price = policy_input['fundamental_token_price']
+    return ('fundamental_token_price', updated_fundamental_token_price)
+
+def s_token_market_multiplier(params, substep, state_history, prev_state, policy_input, **kwargs):
+    # update the token market multiplier
+    updated_token_market_multiplier = policy_input['token_market_multiplier']
+    return ('token_market_multiplier', updated_token_market_multiplier)
+
+def s_token_speculation_premium(params, substep, state_history, prev_state, policy_input, **kwargs):
+    # update the token speculation premium
+    updated_token_speculation_premium = policy_input['token_speculation_premium']
+    return ('token_speculation_premium', updated_token_speculation_premium)
+
+def s_apr_divergence_warning(params, substep, state_history, prev_state, policy_input, **kwargs):
+    # update the APR divergence warning data
+    updated_apr_divergence_warning = policy_input['apr_divergence_warning']
+    return ('apr_divergence_warning', updated_apr_divergence_warning)
+
+def s_business_apr(params, substep, state_history, prev_state, policy_input, **kwargs):
+    # update the business APR (network revenue only)
+    updated_business_apr = policy_input['business_apr']
+    return ('business_apr', updated_business_apr)

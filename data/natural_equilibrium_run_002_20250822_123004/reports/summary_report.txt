@@ -1,0 +1,35 @@
+
+DePIN Simulator - Simulation Summary Report
+==========================================
+Generated: 2025-08-22 12:30:04
+Run Directory: natural_equilibrium_run_002_20250822_123004
+Configuration: Natural Equilibrium
+Description: No APR controller - nodes join naturally when profitable, demonstrating market-driven dynamics
+
+Simulation Parameters:
+Duration: 365 timesteps (1.0 years)
+Monte Carlo Runs: 1
+Emission Policy: linear
+
+Key Final Metrics (at simulation end):
+=====================================
+Network Metrics:
+- Node Count: 15,000 nodes
+- Network Utilization: 100.0%
+- Network Demand: 47,285,766,707 resource units
+
+Token Economics:
+- Token Price: $0.000439
+- Total Token Supply: 9,842,505,800 tokens
+- Circulating Supply: 6,863,339,133 tokens
+- Tokens Staked: 150,000,000 tokens
+
+Node Economics:
+- Node APR: 66.3%
+- Node Profit: $27,346.92 per day
+- Network Revenue: $28,665.00 per day
+- Incentive Revenue: $151.92 per day
+
+Foundation:
+- Cash Reserves: $26,773,220
+- Daily Cash Flow: $6433.07

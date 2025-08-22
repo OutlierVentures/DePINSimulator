@@ -1,11 +1,13 @@
-numpy
-radcad
-typing-extensions
-matplotlib
-tqdm
-pandas
+numpy>=1.21.0,<1.25.0
+pandas>=1.3.0,<1.6.0
+radcad>=0.11.0
+typing-extensions>=4.0.0
+matplotlib>=3.4.0
+tqdm>=4.60.0
+streamlit>=1.28.0
+plotly>=5.0.0
 
 # Testing dependencies
-pytest
-pytest-cov
-pytest-mock
+pytest>=6.0.0
+pytest-cov>=3.0.0
+pytest-mock>=3.0.0

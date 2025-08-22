@@ -1,0 +1,57 @@
+
+DePIN Simulator - Simulation Summary Report
+==========================================
+Generated: 2025-08-14 15:22:39
+Run Directory: conservative_bootstrap_run_003_20250814_152200
+Configuration: Conservative Bootstrap
+Description: Recommended for production: Lower early rewards, longer vesting, sustainable growth
+
+Simulation Parameters:
+Duration: 3,650 timesteps (10.0 years)
+Monte Carlo Runs: 1
+Emission Policy: linear
+
+Key Final Metrics (at simulation end):
+=====================================
+Network Metrics:
+- Node Count: 46,410 nodes
+- Network Utilization: 54.7%
+- Network Demand: 2,489,417,100 resource units
+
+Token Economics:
+- Token Price: $0.001800
+- Total Token Supply: 3,912,583,285 tokens
+- Circulating Supply: 3,912,583,285 tokens
+- Tokens Staked: 464,100,000 tokens (4.6%)
+
+Node Economics:
+- Node APR: 25.3%
+- Node Profit: $32,793.86 per day
+- Network Revenue: $37,341.26 per day
+- Incentive Revenue: $0.00 per day
+
+Foundation:
+- Cash Reserves: $45,957,960
+- Daily Cash Flow: $9,209.48
+
+APR Analysis:
+=============
+- Max APR: 62.0%
+- Min APR: 24.2%
+- Average APR: 25.4%
+- APR Volatility (std): 2.3%
+- Timesteps with APR > 100%: 0
+
+Critical Validation:
+===================
+- Max timesteps with zero nodes: 0
+- Network utilization >100%: 0 timesteps
+- Negative token price: 0 timesteps
+- Foundation bankruptcy risk: No
+
+Files Generated:
+===============
+- data/simulation_results.csv: Complete simulation data
+- data/simulation_results_raw.csv: Raw radCAD output
+- charts/simulation_charts.png: All visualization charts
+- reports/summary_report.txt: This summary report

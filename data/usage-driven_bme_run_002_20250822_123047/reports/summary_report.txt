@@ -1,0 +1,35 @@
+
+DePIN Simulator - Simulation Summary Report
+==========================================
+Generated: 2025-08-22 12:30:47
+Run Directory: usage-driven_bme_run_002_20250822_123047
+Configuration: Usage-Driven BME
+Description: Mature network economics with usage-based burn-and-mint equilibrium emissions
+
+Simulation Parameters:
+Duration: 365 timesteps (1.0 years)
+Monte Carlo Runs: 1
+Emission Policy: bme
+
+Key Final Metrics (at simulation end):
+=====================================
+Network Metrics:
+- Node Count: 113,572 nodes
+- Network Utilization: 100.0%
+- Network Demand: 50,665,900,282 resource units
+
+Token Economics:
+- Token Price: $0.002115
+- Total Token Supply: 9,804,351,935 tokens
+- Circulating Supply: 4,419,481,250 tokens
+- Tokens Staked: 1,135,720,000 tokens
+
+Node Economics:
+- Node APR: 49.2%
+- Node Profit: $155,713.72 per day
+- Network Revenue: $166,374.60 per day
+- Incentive Revenue: $430.76 per day
+
+Foundation:
+- Cash Reserves: $31,988,657
+- Daily Cash Flow: $50500.15

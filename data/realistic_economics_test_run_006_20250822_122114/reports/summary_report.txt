@@ -1,0 +1,35 @@
+
+DePIN Simulator - Simulation Summary Report
+==========================================
+Generated: 2025-08-22 12:21:14
+Run Directory: realistic_economics_test_run_006_20250822_122114
+Configuration: Realistic Economics Test
+Description: More realistic business APR (~8%) with 15% target, testing business APR controller
+
+Simulation Parameters:
+Duration: 365 timesteps (1.0 years)
+Monte Carlo Runs: 1
+Emission Policy: linear
+
+Key Final Metrics (at simulation end):
+=====================================
+Network Metrics:
+- Node Count: 4,645 nodes
+- Network Utilization: 79.3%
+- Network Demand: 360,047,823 resource units
+
+Token Economics:
+- Token Price: $0.000306
+- Total Token Supply: 9,979,659,100 tokens
+- Circulating Supply: 6,812,992,433 tokens
+- Tokens Staked: 46,450,000 tokens
+
+Node Economics:
+- Node APR: 20.8%
+- Node Profit: $2,644.15 per day
+- Network Revenue: $2,937.44 per day
+- Incentive Revenue: $160.94 per day
+
+Foundation:
+- Cash Reserves: $24,294,405
+- Daily Cash Flow: $-1799.74

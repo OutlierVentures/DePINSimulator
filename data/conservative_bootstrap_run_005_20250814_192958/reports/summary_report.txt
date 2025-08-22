@@ -1,0 +1,35 @@
+
+DePIN Simulator - Simulation Summary Report
+==========================================
+Generated: 2025-08-14 19:29:58
+Run Directory: conservative_bootstrap_run_005_20250814_192958
+Configuration: Conservative Bootstrap
+Description: Recommended for production: Lower early rewards, longer vesting, sustainable growth
+
+Simulation Parameters:
+Duration: 365 timesteps (1.0 years)
+Monte Carlo Runs: 1
+Emission Policy: linear
+
+Key Final Metrics (at simulation end):
+=====================================
+Network Metrics:
+- Node Count: 25,563 nodes
+- Network Utilization: 51.5%
+- Network Demand: 1,290,609,100 resource units
+
+Token Economics:
+- Token Price: $0.000254
+- Total Token Supply: 9,838,699,774 tokens
+- Circulating Supply: 5,022,033,108 tokens
+- Tokens Staked: 255,630,000 tokens
+
+Node Economics:
+- Node APR: 24.7%
+- Node Profit: $17,356.20 per day
+- Network Revenue: $19,359.14 per day
+- Incentive Revenue: $501.55 per day
+
+Foundation:
+- Cash Reserves: $26,180,813
+- Daily Cash Flow: $3455.20

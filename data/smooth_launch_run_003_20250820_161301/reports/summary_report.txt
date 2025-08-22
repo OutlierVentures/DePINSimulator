@@ -1,0 +1,35 @@
+
+DePIN Simulator - Simulation Summary Report
+==========================================
+Generated: 2025-08-20 16:13:01
+Run Directory: smooth_launch_run_003_20250820_161301
+Configuration: Smooth Launch
+Description: Optimized initial parameters for natural network development without large node drops
+
+Simulation Parameters:
+Duration: 365 timesteps (1.0 years)
+Monte Carlo Runs: 1
+Emission Policy: per_device
+
+Key Final Metrics (at simulation end):
+=====================================
+Network Metrics:
+- Node Count: 27,716 nodes
+- Network Utilization: 68.5%
+- Network Demand: 1,852,395,835 resource units
+
+Token Economics:
+- Token Price: $0.000421
+- Total Token Supply: 9,922,072,636 tokens
+- Circulating Supply: 6,937,905,969 tokens
+- Tokens Staked: 277,160,000 tokens
+
+Node Economics:
+- Node APR: 25.7%
+- Node Profit: $19,491.61 per day
+- Network Revenue: $21,994.67 per day
+- Incentive Revenue: $202.04 per day
+
+Foundation:
+- Cash Reserves: $25,145,096
+- Daily Cash Flow: $4298.57

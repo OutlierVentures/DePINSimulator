@@ -1,8 +1,9 @@
 venv
 .venv
 
-# Cursor IDE rules (local development)
+# Cursor & Claudo code IDE rules (local development)
 .cursorrules
+CLAUDE.md
 
 # Python cache
 __pycache__/

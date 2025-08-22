@@ -1,0 +1,35 @@
+
+DePIN Simulator - Simulation Summary Report
+==========================================
+Generated: 2025-08-20 15:40:17
+Run Directory: balanced_constrained_launch_run_001_20250820_154017
+Configuration: Balanced Constrained Launch
+Description: Balanced launch with constraint mechanisms enabled to prevent APR divergence
+
+Simulation Parameters:
+Duration: 365 timesteps (1.0 years)
+Monte Carlo Runs: 1
+Emission Policy: linear
+
+Key Final Metrics (at simulation end):
+=====================================
+Network Metrics:
+- Node Count: 147,978 nodes
+- Network Utilization: 100.0%
+- Network Demand: 850,633,919,317 resource units
+
+Token Economics:
+- Token Price: $0.006552
+- Total Token Supply: 9,853,512,803 tokens
+- Circulating Supply: 6,874,346,136 tokens
+- Tokens Staked: 1,479,780,000 tokens
+
+Node Economics:
+- Node APR: 58.9%
+- Node Profit: $253,288.44 per day
+- Network Revenue: $265,672.80 per day
+- Incentive Revenue: $2,375.24 per day
+
+Foundation:
+- Cash Reserves: $39,887,535
+- Daily Cash Flow: $82275.57

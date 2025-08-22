@@ -1,8 +1,10 @@
 """
-DePIN Simulator Model Parameters
-Realistic parameters based on successful DePIN networks (Helium, Filecoin, Akash)
-Validated through economic analysis and network stability testing
+DePIN Simulator Model Parameters - Applied from production/realistic_economics
+More realistic business APR (~8%) with 15% target, testing business APR controller
 """
+
+# Configuration metadata
+CONFIG_INFO = {'name': 'Realistic Economics Test', 'description': 'More realistic business APR (~8%) with 15% target, testing business APR controller', 'best_for': 'Testing controller with realistic early-stage DePIN economics', 'version': '1.0', 'based_on': 'business_apr_test'}
 
 # Initial state values for the simulation
 initial_values = {
@@ -20,151 +22,8 @@ initial_values = {
     'liquidity_token_allocation': 0.05,  # 500M tokens in initial liquidity pool
 }
 
-# Main system parameters - economically validated for network sustainability
-sys_params = {
-    
-    # ===== NODE ECONOMICS PARAMETERS =====
-    # Based on successful DePIN networks like Helium (hardware requirements)
-    
-    'initial_node_amount': [5000],  # Start with 5K nodes (manageable early network scale)
-                                   # Ref: Helium started small and grew organically
-    
-    'node_setup_cost': [1000.0],  # $1000 hardware cost per node (realistic for IoT/compute)
-                                  # Ref: Helium hotspots ~$400-800, compute nodes ~$1K-5K
-    
-    'node_resource_provision_cost': [0.000001],  # $0.000001 per unit operational cost
-                                                # Very low marginal cost (electricity, bandwidth)
-    
-    'node_resource_provision_rate': [100000],  # 100K units/day per node capacity
-                                              # 10x smaller than original for realistic scale
-                                              # Prevents oversupply death spiral
-    
-    'node_reliability': [0.98],  # 98% uptime (realistic for well-maintained hardware)
-                                # Accounts for maintenance, outages, connectivity issues
-    
-    'node_token_stake': [10000],  # 10K tokens staked per node (~$50 at $0.005/token)
-                                 # Economic skin in the game without excessive barrier
-    
-    'node_growth_cap': [5],  # Max 5% daily node growth (sustainable expansion)
-                            # Prevents explosive growth that destabilizes economics
-                            # Ref: Most networks grow 1-10% monthly, not daily
-    
-    'apr_threshold': [15],  # 15% APR target for node operators
-                           # Higher than traditional finance (3-8%) but sustainable
-                           # Ref: Successful DePIN networks maintain 10-30% APR
-    
-    
-    # ===== NETWORK ECONOMICS PARAMETERS =====
-    # Designed for sustainable supply-demand balance
-    
-    'initial_network_resource_demand': [4e8],  # 400M units/day initial demand
-                                              # Set for ~80% initial utilization (healthy)
-                                              # 5K nodes × 100K units × 98% reliability = 490M capacity
-    
-    'resource_unit_price': [0.00002],  # $0.00002 per resource unit (16x higher than original)
-                                      # Calculated for node profitability: $2+ daily profit target
-                                      # Enables sustainable economics with realistic payback periods
-    
-    'network_resource_demand_growth_rate': [0.02],  # 0.02% daily growth (~7.5% annually)
-                                                    # Sustainable demand growth that doesn't outpace supply
-                                                    # Ref: Most successful tech networks grow 10-50% annually
-    
-    
-    # ===== REVENUE DISTRIBUTION PARAMETERS =====
-    # Standard DePIN allocation ensuring all stakeholders benefit
-    
-    'node_revenue_share': [0.75],  # 75% to node operators (primary value creators)
-                                  # High share incentivizes participation and quality service
-    
-    'buyback_and_burn_revenue_share': [0.01],  # 1% for token buyback/burn mechanism
-                                               # Minimal but creates deflationary pressure
-    
-    'foundation_revenue_share': [0.24],  # 24% for foundation operations
-                                        # Covers development, marketing, support costs
-                                        # Total must sum to 1.0 for conservation
-    
-    'foundation_cash_burn_rate': [1e6],  # $1M annual burn rate (realistic for startup DePIN)
-                                        # Covers team salaries, development, operations
-                                        # Provides 25-year runway with initial reserves
-    
-    
-    # ===== TOKEN ECONOMICS PARAMETERS =====
-    # Standard allocations based on successful token projects
-    
-    'incentive_token_allocation': [0.5],  # 50% for node incentives over time
-                                         # Primary mechanism for bootstrapping network
-    
-    'seller_token_allocation': [0.35],  # 35% for investors, team, advisors
-                                       # Standard allocation for early stakeholders
-    
-    'idle_token_allocation': [0.1],  # 10% held in reserve
-                                    # Buffer for future needs, treasury management
-    
-    'seller_token_vesting_duration': [365*3],  # 3-year vesting for seller tokens
-                                               # Standard cliff preventing dump-and-run
-    
-    'incentive_mode': ['fixed_rate'],  # Fixed emission rate for predictability
-                                      # Alternative: 'fixed_weighted_rate' for front-loading
-    
-    'incentive_token_vesting_duration': [365*2],  # 2-year incentive emission period
-                                                  # Balances bootstrapping with long-term sustainability
-    
-    'incentive_early_weight_ratio': [0.8],  # 80% of incentives in first half of period
-                                           # Front-loads rewards for early adopters
-    
-    'token_mint_model': ['none'],  # No additional minting (fixed supply)
-                                  # Could implement BME in future phases
-    
-    
-    # ===== EMISSION POLICY PARAMETERS =====
-    # Different strategies for distributing incentive tokens to node operators
-    
-    'emission_policy': ['linear'],     # Options: 'linear', 'per_device', 'bme'
-                                   # 'linear': Fixed daily emission over vesting period (default)
-                                   # 'per_device': Emissions scale with active node count
-                                   # 'bme': Usage-driven burn-and-mint equilibrium
-    
-    'emission_per_device_daily': [100],  # Tokens per active node per day (for per_device policy)
-                                        # Must be calibrated to avoid budget overrun
-                                        # Current: 100 tokens/node/day × 5000 nodes = 500k/day
-    
-    'emission_device_cap_daily': [500000],  # Max daily emission regardless of node count
-                                           # Prevents runaway emissions during rapid growth
-                                           # Set to maintain ~2 year total emission schedule
-    
-    'emission_cap_enabled': [True],        # Enable/disable emission cap enforcement
-                                          # True: Enforce daily cap (default behavior)
-                                          # False: Only budget limit applies (research mode)
-    
-    # ===== BME EMISSION POLICY PARAMETERS =====
-    # Burn-and-Mint Equilibrium parameters for usage-driven token economics
-    
-    'bme_burn_rate_multiplier': [1.0],    # BME burn rate = network_revenue * multiplier
-                                          # 1.0 = burn equivalent to network revenue
-                                          # Higher values = more aggressive burning
-    
-    'bme_mint_rate_multiplier': [1.0],    # BME mint rate = burn_amount * multiplier  
-                                          # 1.0 = mint equal to burn (equilibrium)
-                                          # >1.0 = inflationary, <1.0 = deflationary
-    
-    
-    # ===== APR CONTROLLER PARAMETERS =====
-    # PID controller gains tuned for stability (reduced from aggressive defaults)
-    
-    'apr_controller_kp': [0.5],  # Proportional gain (reduced from 2.0)
-                                # Lower gain reduces oscillations and overshooting
-    
-    'apr_controller_ki': [0.02],  # Integral gain (reduced from 0.1) 
-                                 # Prevents integral windup in high-error scenarios
-    
-    'apr_controller_kd': [0.001],  # Derivative gain (reduced from 0.01)
-                                  # Minimal derivative action for noise reduction
-    
-    # CONTROLLER TUNING NOTES:
-    # - Original gains caused 11.67% daily node volatility (too aggressive)
-    # - New gains target <2% daily volatility for stability
-    # - Slower response but much more stable network economics
-}
+# Main system parameters - loaded from production/realistic_economics
+sys_params = {'_metadata': {'name': 'Realistic Economics Test', 'description': 'More realistic business APR (~8%) with 15% target, testing business APR controller', 'best_for': 'Testing controller with realistic early-stage DePIN economics', 'version': '1.0', 'based_on': 'business_apr_test'}, 'initial_node_amount': [15000], 'node_setup_cost': [1000.0], 'node_resource_provision_cost': [1e-06], 'node_resource_provision_rate': [100000], 'node_reliability': [0.98], 'node_token_stake': [10000], 'node_growth_cap': [3], '_comment_realistic_target': '=== REALISTIC TARGET APR ===', 'apr_threshold': [15], 'apr_controller_kp': [0.5], 'apr_controller_ki': [0.02], 'apr_controller_kd': [0.001], '_comment_reduced_economics': '=== REDUCED BUSINESS REVENUE ===', 'initial_network_resource_demand': [300000000], 'resource_unit_price': [1e-05], '_comment_custom_growth': '=== CUSTOM DEMAND GROWTH PHASES ===', 'network_resource_demand_growth_rate': [0.0005], 'business_growth_phases': [[{'days': 90, 'daily_growth_rate': 0.05, 'description': 'Early launch phase - slow organic growth'}, {'days': 180, 'daily_growth_rate': 0.03, 'description': 'Growth acceleration phase'}, {'days': 365, 'daily_growth_rate': 0.02, 'description': 'Mature network steady growth'}]], 'demand_growth_milestones': [[{'day': 120, 'multiplier': 1.2, 'description': 'Partnership milestone boost'}]], 'node_revenue_share': [0.75], 'buyback_and_burn_revenue_share': [0.01], 'foundation_revenue_share': [0.24], 'foundation_cash_burn_rate': [1000000], '_comment_token_heavy': '=== TOKEN-HEAVY EARLY ECONOMICS ===', 'incentive_token_allocation': [0.08], 'seller_token_allocation': [0.4], 'idle_token_allocation': [0.47], 'seller_token_vesting_duration': [1095], 'incentive_mode': ['fixed_rate'], 'incentive_token_vesting_duration': [1460], 'incentive_early_weight_ratio': [0.8], 'token_mint_model': ['none'], 'emission_policy': ['linear'], 'emission_per_device_daily': [100], 'emission_device_cap_daily': [500000], 'emission_cap_enabled': [True], 'bme_burn_rate_multiplier': [1.0], 'bme_mint_rate_multiplier': [1.0], '_comment_constraints': '=== MARKET CONSTRAINTS ===', 'resource_pricing_model': ['utilization_based'], 'resource_price_utilization_sensitivity': [0.3], 'resource_price_adjustment_enabled': [True], 'resource_price_min_multiplier': [0.7], 'resource_price_max_multiplier': [2.0], 'utilization_controller_enabled': [False], 'utilization_target': [0.8], 'utilization_tolerance': [0.15]}
 
 # Parameter validation and constraints
 def validate_params():
@@ -217,3 +76,6 @@ def validate_params():
 if __name__ == "__main__":
     validate_params()
     print("✅ All parameter validations passed")
+    print(f"📋 Configuration: production/realistic_economics")
+    if '_metadata' in config:
+        print(f"📝 Description: {config['_metadata'].get('description', 'N/A')}")

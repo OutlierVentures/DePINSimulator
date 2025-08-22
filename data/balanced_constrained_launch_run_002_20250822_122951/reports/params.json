@@ -1,0 +1,158 @@
+{
+  "_metadata": {
+    "name": "Balanced Constrained Launch",
+    "description": "Balanced launch with constraint mechanisms enabled to prevent APR divergence",
+    "best_for": "Testing supply-demand balance with utilization and pricing controls",
+    "version": "1.0",
+    "based_on": "balanced_launch"
+  },
+  "initial_node_amount": [
+    15000
+  ],
+  "node_setup_cost": [
+    1000.0
+  ],
+  "node_resource_provision_cost": [
+    1e-06
+  ],
+  "node_resource_provision_rate": [
+    100000
+  ],
+  "node_reliability": [
+    0.98
+  ],
+  "node_token_stake": [
+    10000
+  ],
+  "node_growth_cap": [
+    5.0
+  ],
+  "apr_threshold": [
+    30.0
+  ],
+  "initial_network_resource_demand": [
+    1200000000
+  ],
+  "resource_unit_price": [
+    2e-05
+  ],
+  "network_resource_demand_growth_rate": [
+    0.02
+  ],
+  "node_revenue_share": [
+    0.75
+  ],
+  "buyback_and_burn_revenue_share": [
+    0.01
+  ],
+  "foundation_revenue_share": [
+    0.24
+  ],
+  "foundation_cash_burn_rate": [
+    1000000
+  ],
+  "incentive_token_allocation": [
+    0.055
+  ],
+  "seller_token_allocation": [
+    0.4
+  ],
+  "idle_token_allocation": [
+    0.495
+  ],
+  "seller_token_vesting_duration": [
+    1095
+  ],
+  "incentive_mode": [
+    "fixed_rate"
+  ],
+  "incentive_token_vesting_duration": [
+    1460
+  ],
+  "incentive_early_weight_ratio": [
+    0.8
+  ],
+  "token_mint_model": [
+    "none"
+  ],
+  "emission_policy": [
+    "linear"
+  ],
+  "emission_per_device_daily": [
+    100
+  ],
+  "emission_device_cap_daily": [
+    500000
+  ],
+  "emission_cap_enabled": [
+    true
+  ],
+  "bme_burn_rate_multiplier": [
+    1.0
+  ],
+  "bme_mint_rate_multiplier": [
+    1.0
+  ],
+  "apr_controller_kp": [
+    0.5
+  ],
+  "apr_controller_ki": [
+    0.02
+  ],
+  "apr_controller_kd": [
+    0.001
+  ],
+  "_comment_resource_pricing": "=== RESOURCE PRICING MODEL ===",
+  "resource_pricing_model": [
+    "utilization_based"
+  ],
+  "resource_price_utilization_sensitivity": [
+    0.4
+  ],
+  "resource_price_adjustment_enabled": [
+    true
+  ],
+  "resource_price_min_multiplier": [
+    0.6
+  ],
+  "resource_price_max_multiplier": [
+    2.5
+  ],
+  "_comment_utilization_controller": "=== UTILIZATION-BASED SUPPLY CONTROLLER ===",
+  "utilization_controller_enabled": [
+    true
+  ],
+  "utilization_target": [
+    0.85
+  ],
+  "utilization_tolerance": [
+    0.1
+  ],
+  "utilization_controller_kp": [
+    1.0
+  ],
+  "utilization_controller_ki": [
+    0.05
+  ],
+  "utilization_controller_kd": [
+    0.01
+  ],
+  "token_market_scenario": [
+    "stable"
+  ],
+  "token_speculation_factor": [
+    1.0
+  ],
+  "initial_foundation_cash_reserves": [
+    25000000
+  ],
+  "token_initial_total_supply": [
+    10000000000
+  ],
+  "token_initial_valuation": [
+    50000000
+  ],
+  "business_growth_scenario": [
+    "linear"
+  ]
+}

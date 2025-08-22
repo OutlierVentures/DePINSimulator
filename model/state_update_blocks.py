@@ -32,6 +32,7 @@ state_update_blocks = [
         'variables': {
             'network_resource_provision': s_network_resource_provision,
             'network_resource_demand_supply_ratio': s_network_resource_demand_supply_ratio,
+            'utilization_error_cum': s_utilization_error_cum,
             }
     },
     {
@@ -44,6 +45,8 @@ state_update_blocks = [
             'buyback_and_burn_revenue': s_buyback_and_burn_revenue,
             'foundation_revenue': s_foundation_revenue,
             'node_network_revenue': s_node_network_revenue,
+            'resource_unit_price_current': s_resource_unit_price_current,
+            'resource_price_multiplier': s_resource_price_multiplier,
             }
     },
     {
@@ -56,9 +59,11 @@ state_update_blocks = [
             'node_incentive_revenue': s_node_incentive_revenue,
             'node_expenditures': s_node_expenditures,
             'node_apr': s_node_apr,
+            'business_apr': s_business_apr,
             'dex_tokens': s_dex_liquidity_tokens,
             'dex_usdc': s_dex_liquidity_usdc,
-            'dex_token_price': s_dex_liquidity_token_price
+            'dex_token_price': s_dex_liquidity_token_price,
+            'fundamental_token_price': s_fundamental_token_price
             }
     },
     {
@@ -80,7 +85,8 @@ state_update_blocks = [
         'variables': {
             'dex_tokens': s_dex_liquidity_tokens,
             'dex_usdc': s_dex_liquidity_usdc,
-            'dex_token_price': s_dex_liquidity_token_price
+            'dex_token_price': s_dex_liquidity_token_price,
+            'fundamental_token_price': s_fundamental_token_price
             }
     },
     {
@@ -92,6 +98,7 @@ state_update_blocks = [
             'dex_tokens': s_dex_liquidity_tokens,
             'dex_usdc': s_dex_liquidity_usdc,
             'dex_token_price': s_dex_liquidity_token_price,
+            'fundamental_token_price': s_fundamental_token_price,
             'token_burned_supply': s_token_burned_supply,
             'token_burned_supply_cum': s_token_burned_supply_cum
             }
@@ -100,6 +107,7 @@ state_update_blocks = [
         'label': 'p_node_changes',
         'policies': {
             'p_node_changes': p_node_changes,
+            'p_apr_divergence_warning': p_apr_divergence_warning,
             },
         'variables': {
             'node_amount': s_node_amount,
@@ -108,7 +116,9 @@ state_update_blocks = [
             'dex_tokens': s_dex_liquidity_tokens,
             'dex_usdc': s_dex_liquidity_usdc,
             'dex_token_price': s_dex_liquidity_token_price,
-            'node_apr_error_cum': s_node_apr_error_cum
+            'fundamental_token_price': s_fundamental_token_price,
+            'node_apr_error_cum': s_node_apr_error_cum,
+            'apr_divergence_warning': s_apr_divergence_warning
             }
     },
     {
@@ -119,6 +129,16 @@ state_update_blocks = [
         'variables': {
             'token_total_supply': s_token_total_supply,
             'token_circulating_supply': s_token_circulating_supply
+            }
+    },
+    {
+        'label': 'p_token_market_dynamics',
+        'policies': {
+            'p_token_market_dynamics': p_token_market_dynamics,
+            },
+        'variables': {
+            'token_market_multiplier': s_token_market_multiplier,
+            'token_speculation_premium': s_token_speculation_premium
             }
     },
     {

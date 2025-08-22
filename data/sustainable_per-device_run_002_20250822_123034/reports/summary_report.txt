@@ -1,0 +1,35 @@
+
+DePIN Simulator - Simulation Summary Report
+==========================================
+Generated: 2025-08-22 12:30:34
+Run Directory: sustainable_per-device_run_002_20250822_123034
+Configuration: Sustainable Per-Device
+Description: Emissions scale with network size, balanced approach with per-device rewards
+
+Simulation Parameters:
+Duration: 365 timesteps (1.0 years)
+Monte Carlo Runs: 1
+Emission Policy: per_device
+
+Key Final Metrics (at simulation end):
+=====================================
+Network Metrics:
+- Node Count: 118,455 nodes
+- Network Utilization: 100.0%
+- Network Demand: 244,212,653,388 resource units
+
+Token Economics:
+- Token Price: $0.003560
+- Total Token Supply: 9,852,327,659 tokens
+- Circulating Supply: 3,788,327,659 tokens
+- Tokens Staked: 1,184,550,000 tokens
+
+Node Economics:
+- Node APR: 48.8%
+- Node Profit: $163,360.95 per day
+- Network Revenue: $173,565.84 per day
+- Incentive Revenue: $1,366.17 per day
+
+Foundation:
+- Cash Reserves: $32,784,985
+- Daily Cash Flow: $52801.34

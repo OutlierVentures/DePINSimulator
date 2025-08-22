@@ -1,0 +1,171 @@
+{
+  "_metadata": {
+    "name": "Smooth Launch",
+    "description": "Optimized initial parameters for natural network development without large node drops",
+    "best_for": "Clean launch dynamics with business APR controller - minimal initial adjustments",
+    "version": "1.0",
+    "based_on": "realistic_economics"
+  },
+  "initial_node_amount": [
+    15000
+  ],
+  "node_setup_cost": [
+    1000.0
+  ],
+  "node_resource_provision_cost": [
+    1e-06
+  ],
+  "node_resource_provision_rate": [
+    100000
+  ],
+  "node_reliability": [
+    0.98
+  ],
+  "node_token_stake": [
+    10000
+  ],
+  "node_growth_cap": [
+    3
+  ],
+  "_comment_balanced_target": "=== BALANCED TARGET APR ===",
+  "apr_threshold": [
+    10.0
+  ],
+  "apr_controller_kp": [
+    0.5
+  ],
+  "apr_controller_ki": [
+    0.02
+  ],
+  "apr_controller_kd": [
+    0.001
+  ],
+  "_comment_increased_economics": "=== INCREASED BUSINESS REVENUE ===",
+  "initial_network_resource_demand": [
+    600000000
+  ],
+  "resource_unit_price": [
+    1.5e-05
+  ],
+  "_comment_custom_growth": "=== CUSTOM DEMAND GROWTH PHASES ===",
+  "network_resource_demand_growth_rate": [
+    0.005
+  ],
+  "business_growth_phases": [
+    [
+      {
+        "days": 90,
+        "daily_growth_rate": 0.05,
+        "description": "Early launch phase - slow organic growth"
+      },
+      {
+        "days": 180,
+        "daily_growth_rate": 0.03,
+        "description": "Growth acceleration phase"
+      },
+      {
+        "days": 365,
+        "daily_growth_rate": 0.02,
+        "description": "Mature network steady growth"
+      }
+    ]
+  ],
+  "demand_growth_milestones": [
+    [
+      {
+        "day": 120,
+        "multiplier": 1.2,
+        "description": "Partnership milestone boost"
+      }
+    ]
+  ],
+  "node_revenue_share": [
+    0.75
+  ],
+  "buyback_and_burn_revenue_share": [
+    0.01
+  ],
+  "foundation_revenue_share": [
+    0.24
+  ],
+  "foundation_cash_burn_rate": [
+    1000000
+  ],
+  "_comment_token_balanced": "=== BALANCED TOKEN ECONOMICS ===",
+  "incentive_token_allocation": [
+    0.06
+  ],
+  "seller_token_allocation": [
+    0.4
+  ],
+  "idle_token_allocation": [
+    0.49
+  ],
+  "seller_token_vesting_duration": [
+    1095
+  ],
+  "incentive_mode": [
+    "fixed_rate"
+  ],
+  "incentive_token_vesting_duration": [
+    1460
+  ],
+  "incentive_early_weight_ratio": [
+    0.8
+  ],
+  "token_mint_model": [
+    "none"
+  ],
+  "emission_policy": [
+    "per_device"
+  ],
+  "emission_per_device_daily": [
+    100
+  ],
+  "emission_device_cap_daily": [
+    500000
+  ],
+  "emission_cap_enabled": [
+    true
+  ],
+  "bme_burn_rate_multiplier": [
+    1.0
+  ],
+  "bme_mint_rate_multiplier": [
+    1.0
+  ],
+  "_comment_constraints": "=== MARKET CONSTRAINTS ===",
+  "resource_pricing_model": [
+    "utilization_based"
+  ],
+  "resource_price_utilization_sensitivity": [
+    0.3
+  ],
+  "resource_price_adjustment_enabled": [
+    true
+  ],
+  "resource_price_min_multiplier": [
+    0.7
+  ],
+  "resource_price_max_multiplier": [
+    2.0
+  ],
+  "utilization_controller_enabled": [
+    false
+  ],
+  "utilization_target": [
+    0.8
+  ],
+  "utilization_tolerance": [
+    0.15
+  ],
+  "token_market_scenario": [
+    "stable"
+  ],
+  "token_speculation_factor": [
+    1.0
+  ],
+  "business_growth_scenario": [
+    "linear"
+  ]
+}

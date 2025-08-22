@@ -1,0 +1,47 @@
+{
+  "_metadata": {
+    "name": "Usage-Driven BME",
+    "description": "Mature network economics with usage-based burn-and-mint equilibrium emissions",
+    "best_for": "Established networks focusing on utility-driven sustainable token economics",
+    "version": "1.0",
+    "based_on": "base_template"
+  },
+  
+  "initial_node_amount": [20000],
+  "node_setup_cost": [1000.0],
+  "node_resource_provision_cost": [0.000001],
+  "node_resource_provision_rate": [100000],
+  "node_reliability": [0.98],
+  "node_token_stake": [10000],
+  "node_growth_cap": [3],
+  "apr_threshold": [12],
+
+  "initial_network_resource_demand": [1800000000],
+  "resource_unit_price": [0.00002],
+  "network_resource_demand_growth_rate": [0.015],
+
+  "node_revenue_share": [0.75],
+  "buyback_and_burn_revenue_share": [0.01],
+  "foundation_revenue_share": [0.24],
+  "foundation_cash_burn_rate": [1000000],
+
+  "incentive_token_allocation": [0.25],
+  "seller_token_allocation": [0.45],
+  "idle_token_allocation": [0.25],
+  "seller_token_vesting_duration": [1095],
+  "incentive_mode": ["fixed_rate"],
+  "incentive_token_vesting_duration": [1825],
+  "incentive_early_weight_ratio": [0.6],
+  "token_mint_model": ["none"],
+
+  "emission_policy": ["bme"],
+  "emission_per_device_daily": [100],
+  "emission_device_cap_daily": [500000],
+  "emission_cap_enabled": [false],
+  "bme_burn_rate_multiplier": [0.8],
+  "bme_mint_rate_multiplier": [1.2],
+
+  "apr_controller_kp": [0.3],
+  "apr_controller_ki": [0.01],
+  "apr_controller_kd": [0.001]
+}
